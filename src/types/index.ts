@@ -12,6 +12,19 @@ export interface User {
   isOnline?: boolean;
 }
 
+export interface ProjectRole {
+  user: User;
+  role: string;
+  skills: string[];
+  joinedAt?: Date;
+}
+
+export interface ProjectLink {
+  id: string;
+  label: string;
+  url: string;
+}
+
 export interface Project {
   id: string;
   title: string;
@@ -25,6 +38,8 @@ export interface Project {
   dueDate?: Date;
   tasksCompleted: number;
   tasksTotal: number;
+  links?: ProjectLink[];
+  roles?: ProjectRole[];
 }
 
 export interface Subtask {

@@ -89,7 +89,7 @@ export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
     { id: 'project', icon: Box, label: 'Project' },
     { id: 'board', icon: LayoutGrid, label: 'Board' },
     { id: 'list', icon: ListTodo, label: 'My Tasks' },
-    { id: 'chat', icon: MessageSquare, label: 'Chat' },
+    { id: 'chat', icon: MessageSquare, label: 'Group Chat' },
     { id: 'files', icon: Folder, label: 'Files' },
     { id: 'settings', icon: Settings, label: 'Settings' },
   ];

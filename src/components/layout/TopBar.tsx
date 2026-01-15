@@ -43,22 +43,10 @@ export function TopBar({ onNewProject, onNewTask }: TopBarProps) {
 
       {/* Right section */}
       <div className="flex items-center gap-2">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="glow" size="sm" className="gap-1">
-              <Plus className="h-4 w-4" />
-              <span className="hidden sm:inline">Create Project</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-40">
-            <DropdownMenuItem onClick={onNewProject}>
-              New Project
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={onNewTask}>
-              New Task
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <Button variant="glow" size="sm" className="gap-1" onClick={onNewProject}>
+          <Plus className="h-4 w-4" />
+          <span className="hidden sm:inline">Create Project</span>
+        </Button>
 
         <Button variant="ghost" size="icon" className="relative">
           <Bell className="h-4 w-4" />

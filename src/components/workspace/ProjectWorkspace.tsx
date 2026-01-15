@@ -105,13 +105,9 @@ export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
             <ArrowLeft className="h-4 w-4" />
             Back
           </Button>
-          <Button 
-            variant="ghost"
-            className="w-full font-semibold text-foreground text-left truncate px-3 py-2 h-auto hover:bg-surface-hover justify-start"
-            onClick={() => setActiveView('project')}
-          >
+          <h2 className="font-semibold text-foreground truncate px-3">
             {project.title}
-          </Button>
+          </h2>
           <Badge variant={statusVariants[project.status]} className="mt-2 ml-3">
             {statusLabels[project.status]}
           </Badge>

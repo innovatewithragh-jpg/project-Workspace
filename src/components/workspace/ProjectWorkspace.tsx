@@ -20,6 +20,7 @@ import { TaskModal } from '@/components/tasks/TaskModal';
 import { CreateTaskModal } from '@/components/tasks/CreateTaskModal';
 import { ProjectChat } from '@/components/chat/ProjectChat';
 import { ProjectDetailsView } from '@/components/projects/ProjectDetailsView';
+import { SettingsView } from '@/components/settings/SettingsView';
 import { tasks as mockTasks, chatMessages, projects } from '@/data/mockData';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
@@ -211,11 +212,7 @@ export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
             </div>
           )}
           {activeView === 'files' && <FilesSection />}
-          {activeView === 'settings' && (
-            <div className="text-center py-12 text-muted-foreground">
-              Settings coming soon
-            </div>
-          )}
+          {activeView === 'settings' && <SettingsView project={project} />}
         </div>
       </main>
 

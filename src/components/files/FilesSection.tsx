@@ -3,6 +3,16 @@ import { Upload, File, FileText, Image, Trash2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog';
 import { users } from '@/data/mockData';
 import { format } from 'date-fns';
 
@@ -56,6 +66,7 @@ const getFileIcon = (type: string) => {
 export function FilesSection() {
   const [files, setFiles] = useState<UploadedFile[]>(mockFiles);
   const [isDragging, setIsDragging] = useState(false);
+  const [fileToDelete, setFileToDelete] = useState<UploadedFile | null>(null);
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
@@ -98,12 +109,16 @@ export function FilesSection() {
     return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
   };
 
-  const handleDelete = (id: string) => {
-    setFiles((prev) => prev.filter((file) => file.id !== id));
+  const confirmDelete = () => {
+    if (fileToDelete) {
+      setFiles((prev) => prev.filter((file) => file.id !== fileToDelete.id));
+      setFileToDelete(null);
+    }
   };
 
   return (
-    <div className="space-y-6">
+    <>
+      <div className="space-y-6">
       {/* Upload Area */}
       <Card
         className={`border-2 border-dashed transition-colors ${
@@ -161,7 +176,7 @@ export function FilesSection() {
                       variant="ghost"
                       size="icon"
                       className="text-muted-foreground hover:text-destructive"
-                      onClick={() => handleDelete(file.id)}
+                      onClick={() => setFileToDelete(file)}
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -173,5 +188,24 @@ export function FilesSection() {
         )}
       </div>
     </div>
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={!!fileToDelete} onOpenChange={(open) => !open && setFileToDelete(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Delete File</AlertDialogTitle>
+            <AlertDialogDescription>
+              Are you sure you want to delete "{fileToDelete?.name}"? This action cannot be undone.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={confirmDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              Delete
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   );
 }

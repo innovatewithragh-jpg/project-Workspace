@@ -42,7 +42,7 @@ export function ProjectCard({
   onEdit,
   onDelete,
 }: ProjectCardProps) {
-  const activeTasks = project.tasksTotal - project.tasksCompleted;
+  
   const progressPercent = project.tasksTotal > 0 
     ? Math.round((project.tasksCompleted / project.tasksTotal) * 100) 
     : 0;
@@ -139,9 +139,9 @@ export function ProjectCard({
           )}
         </div>
 
-        {/* Active Tasks */}
+        {/* Active Members */}
         <div className="text-xs text-muted-foreground">
-          {activeTasks} active
+          {project.members.length} active
         </div>
       </div>
     </div>

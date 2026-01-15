@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Save, Trash2, Bell, Users, Lock, Palette } from 'lucide-react';
+import { Save, Trash2, Bell, Users, Lock, Settings } from 'lucide-react';
 import { Project } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -67,7 +67,7 @@ export function SettingsView({ project }: SettingsViewProps) {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Palette className="h-5 w-5" />
+            <Settings className="h-5 w-5" />
             General Settings
           </CardTitle>
           <CardDescription>

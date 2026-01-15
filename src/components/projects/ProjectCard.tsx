@@ -42,7 +42,7 @@ export function ProjectCard({
   onEdit,
   onDelete,
 }: ProjectCardProps) {
-  const pendingTasks = project.tasksTotal - project.tasksCompleted;
+  const activeTasks = project.tasksTotal - project.tasksCompleted;
   const progressPercent = project.tasksTotal > 0 
     ? Math.round((project.tasksCompleted / project.tasksTotal) * 100) 
     : 0;
@@ -139,10 +139,10 @@ export function ProjectCard({
           )}
         </div>
 
-        {/* Pending Tasks */}
+        {/* Active Tasks */}
         <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
           <CheckCircle2 className="h-3.5 w-3.5" />
-          <span>{pendingTasks} pending</span>
+          <span>{activeTasks} active</span>
         </div>
       </div>
     </div>

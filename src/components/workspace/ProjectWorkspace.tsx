@@ -177,20 +177,10 @@ export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
       {/* Main content */}
       <main className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="h-12 border-b border-border flex items-center justify-between px-4">
-          <div className="flex items-center gap-3">
-            <h3 className="font-medium text-foreground">
-              {navItems.find((n) => n.id === activeView)?.label}
-            </h3>
-          </div>
-          <div className="flex -space-x-2">
-            {project.members.slice(0, 3).map((member) => (
-              <Avatar key={member.id} className="h-7 w-7 border-2 border-background">
-                <AvatarImage src={member.avatar} />
-                <AvatarFallback className="text-xs">{member.name.charAt(0)}</AvatarFallback>
-              </Avatar>
-            ))}
-          </div>
+        <header className="h-12 border-b border-border flex items-center px-4">
+          <h3 className="font-medium text-foreground">
+            {navItems.find((n) => n.id === activeView)?.label}
+          </h3>
         </header>
 
         {/* Content */}

@@ -1,4 +1,4 @@
-import { Calendar, MoreHorizontal, Star, Pencil, Trash2, UserPlus } from 'lucide-react';
+import { Calendar, MoreHorizontal, Star, Pencil, Trash2 } from 'lucide-react';
 import { Project } from '@/types';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -133,7 +133,7 @@ export function ProjectCard({
           </div>
           {project.members.length > 3 && (
             <div className="ml-1 h-7 w-7 rounded-full border-2 border-card ring-2 ring-background/50 bg-muted flex items-center justify-center">
-              <UserPlus className="h-3.5 w-3.5 text-muted-foreground" />
+              <span className="text-xs font-medium text-muted-foreground">{project.members.length - 3}+</span>
             </div>
           )}
         </div>

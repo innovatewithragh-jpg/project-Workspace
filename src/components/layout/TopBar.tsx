@@ -47,7 +47,7 @@ export function TopBar({ onNewProject, onNewTask }: TopBarProps) {
           <DropdownMenuTrigger asChild>
             <Button variant="glow" size="sm" className="gap-1">
               <Plus className="h-4 w-4" />
-              <span className="hidden sm:inline">New</span>
+              <span className="hidden sm:inline">Create Project</span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-40">

@@ -9,16 +9,18 @@ import {
   Users,
   ChevronDown,
 } from 'lucide-react';
-import { Project, Task } from '@/types';
+import { Project, Task, TaskStatus } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { KanbanBoard } from '@/components/tasks/KanbanBoard';
 import { MyTasksList } from '@/components/tasks/MyTasksList';
 import { TaskModal } from '@/components/tasks/TaskModal';
+import { CreateTaskModal } from '@/components/tasks/CreateTaskModal';
 import { ProjectChat } from '@/components/chat/ProjectChat';
 import { tasks as mockTasks, chatMessages, projects } from '@/data/mockData';
 import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
 
 interface ProjectWorkspaceProps {
   project: Project;
@@ -45,12 +47,36 @@ export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
   const [activeView, setActiveView] = useState<ViewType>('board');
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
+  const [createTaskStatus, setCreateTaskStatus] = useState<TaskStatus>('todo');
+  const { toast } = useToast();
 
   const projectTasks = mockTasks.filter((t) => t.projectId === project.id);
 
   const handleTaskClick = (task: Task) => {
     setSelectedTask(task);
     setIsTaskModalOpen(true);
+  };
+
+  const handleAddTask = (status: TaskStatus) => {
+    setCreateTaskStatus(status);
+    setIsCreateTaskModalOpen(true);
+  };
+
+  const handleCreateTask = (taskData: {
+    title: string;
+    description: string;
+    status: TaskStatus;
+    assignees: any[];
+    dueDate?: Date;
+    tags: string[];
+  }) => {
+    // In a real app, this would save to the database
+    console.log('Creating task:', taskData);
+    toast({
+      title: 'Task created',
+      description: `"${taskData.title}" has been added to ${taskData.status.replace('_', ' ')}.`,
+    });
   };
 
   const navItems: { id: ViewType; icon: typeof LayoutGrid; label: string }[] = [
@@ -170,7 +196,7 @@ export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
         {/* Content */}
         <div className="flex-1 overflow-auto p-4">
           {activeView === 'board' && (
-            <KanbanBoard tasks={projectTasks} onTaskClick={handleTaskClick} />
+            <KanbanBoard tasks={projectTasks} onTaskClick={handleTaskClick} onAddTask={handleAddTask} />
           )}
           {activeView === 'list' && (
             <MyTasksList 
@@ -202,6 +228,14 @@ export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
         task={selectedTask}
         open={isTaskModalOpen}
         onOpenChange={setIsTaskModalOpen}
+      />
+
+      {/* Create task modal */}
+      <CreateTaskModal
+        open={isCreateTaskModalOpen}
+        onOpenChange={setIsCreateTaskModalOpen}
+        initialStatus={createTaskStatus}
+        onCreateTask={handleCreateTask}
       />
     </div>
   );

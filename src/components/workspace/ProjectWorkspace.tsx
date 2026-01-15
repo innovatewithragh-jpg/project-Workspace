@@ -7,7 +7,6 @@ import {
   Folder,
   Settings,
   Users,
-  ChevronDown,
 } from 'lucide-react';
 import { Project, Task, TaskStatus } from '@/types';
 import { Button } from '@/components/ui/button';
@@ -19,6 +18,7 @@ import { FilesSection } from '@/components/files/FilesSection';
 import { TaskModal } from '@/components/tasks/TaskModal';
 import { CreateTaskModal } from '@/components/tasks/CreateTaskModal';
 import { ProjectChat } from '@/components/chat/ProjectChat';
+import { ProjectDetailsSheet } from '@/components/projects/ProjectDetailsSheet';
 import { tasks as mockTasks, chatMessages, projects } from '@/data/mockData';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
@@ -50,6 +50,7 @@ export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
   const [createTaskStatus, setCreateTaskStatus] = useState<TaskStatus>('todo');
+  const [isProjectDetailsOpen, setIsProjectDetailsOpen] = useState(false);
   const { toast } = useToast();
 
   const projectTasks = mockTasks.filter((t) => t.projectId === project.id);
@@ -103,7 +104,12 @@ export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
             <ArrowLeft className="h-4 w-4" />
             Back
           </Button>
-          <h2 className="font-semibold text-foreground truncate">{project.title}</h2>
+          <h2 
+            className="font-semibold text-foreground truncate cursor-pointer hover:text-primary transition-colors"
+            onClick={() => setIsProjectDetailsOpen(true)}
+          >
+            {project.title}
+          </h2>
           <Badge variant={statusVariants[project.status]} className="mt-2">
             {statusLabels[project.status]}
           </Badge>
@@ -227,6 +233,13 @@ export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
         onOpenChange={setIsCreateTaskModalOpen}
         initialStatus={createTaskStatus}
         onCreateTask={handleCreateTask}
+      />
+
+      {/* Project details sheet */}
+      <ProjectDetailsSheet
+        project={project}
+        open={isProjectDetailsOpen}
+        onOpenChange={setIsProjectDetailsOpen}
       />
     </div>
   );

@@ -9,7 +9,7 @@ const Index = () => {
   const navigate = useNavigate();
 
   const handleProjectClick = (project: Project) => {
-    navigate(`/project/${project.id}`);
+    navigate(`/project/${project.id}/workspace`);
   };
 
   return (

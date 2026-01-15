@@ -25,18 +25,8 @@ interface TopBarProps {
 export function TopBar({ onNewProject, onNewTask }: TopBarProps) {
   return (
     <header className="h-14 border-b border-border bg-surface-elevated flex items-center justify-between px-4 sticky top-0 z-50">
-      {/* Left section */}
-      <div className="flex items-center gap-4">
-        <div className="flex items-center gap-2">
-          <div className="h-8 w-8 rounded-lg bg-primary flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-sm">G</span>
-          </div>
-          <span className="font-semibold text-foreground hidden sm:block">GoStuds</span>
-        </div>
-
-        <div className="flex items-center">
-          <span className="text-sm font-medium text-foreground">My Workspace</span>
-        </div>
+      <div className="flex items-center">
+        <span className="text-lg font-semibold text-foreground">My Workspace</span>
       </div>
 
       {/* Center - Search */}

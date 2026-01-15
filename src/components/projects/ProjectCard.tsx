@@ -1,4 +1,4 @@
-import { Calendar, Users, MoreHorizontal, MessageSquare, Plus, Star, Pencil, Trash2, Archive, Copy } from 'lucide-react';
+import { Calendar, Users, MoreHorizontal, MessageSquare, Plus, Star, Pencil, Trash2 } from 'lucide-react';
 import { Project } from '@/types';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -20,8 +20,6 @@ interface ProjectCardProps {
   onQuickTask?: () => void;
   onTogglePin?: () => void;
   onEdit?: () => void;
-  onDuplicate?: () => void;
-  onArchive?: () => void;
   onDelete?: () => void;
 }
 
@@ -46,8 +44,6 @@ export function ProjectCard({
   onQuickTask,
   onTogglePin,
   onEdit,
-  onDuplicate,
-  onArchive,
   onDelete,
 }: ProjectCardProps) {
   const progressPercent = project.tasksTotal > 0 
@@ -103,15 +99,7 @@ export function ProjectCard({
               <Pencil className="h-4 w-4 mr-2" />
               Edit project
             </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => onDuplicate?.()}>
-              <Copy className="h-4 w-4 mr-2" />
-              Duplicate
-            </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => onArchive?.()}>
-              <Archive className="h-4 w-4 mr-2" />
-              Archive
-            </DropdownMenuItem>
             <DropdownMenuItem onClick={() => onDelete?.()} className="text-destructive focus:text-destructive">
               <Trash2 className="h-4 w-4 mr-2" />
               Delete

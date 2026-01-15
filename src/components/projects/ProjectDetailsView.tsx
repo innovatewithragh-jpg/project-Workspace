@@ -1,4 +1,4 @@
-import { Calendar, Link as LinkIcon, Tag, Settings, MessageSquare, MoreVertical } from 'lucide-react';
+import { Calendar, Link as LinkIcon, Tag, Settings, MessageSquare, MoreVertical, Plus } from 'lucide-react';
 import { Project } from '@/types';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -163,6 +163,15 @@ export function ProjectDetailsView({ project }: ProjectDetailsViewProps) {
                   </CardContent>
                 </Card>
               ))}
+              {/* Add Role Card */}
+              <Card className="border border-dashed border-border hover:border-primary/50 transition-colors cursor-pointer group">
+                <CardContent className="p-4 flex flex-col items-center justify-center h-full min-h-[140px]">
+                  <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center group-hover:bg-primary/10 transition-colors">
+                    <Plus className="h-6 w-6 text-muted-foreground group-hover:text-primary transition-colors" />
+                  </div>
+                  <p className="mt-3 text-sm font-medium text-muted-foreground group-hover:text-foreground transition-colors">Add Role</p>
+                </CardContent>
+              </Card>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

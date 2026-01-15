@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   ArrowLeft,
   LayoutGrid,
@@ -8,6 +9,7 @@ import {
   Settings,
   Users,
   Box,
+  Home,
 } from 'lucide-react';
 import { Project, Task, TaskStatus } from '@/types';
 import { Button } from '@/components/ui/button';
@@ -47,6 +49,7 @@ const statusVariants: Record<Project['status'], 'planning' | 'active' | 'paused'
 };
 
 export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
+  const navigate = useNavigate();
   const [activeView, setActiveView] = useState<ViewType>('board');
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
@@ -115,7 +118,7 @@ export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 p-2">
+        <nav className="flex-1 p-2 flex flex-col">
           <div className="space-y-1">
             {navItems.map((item) => (
               <button
@@ -137,6 +140,19 @@ export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
                 )}
               </button>
             ))}
+          </div>
+
+          {/* Back to Home button - positioned at bottom with gap */}
+          <div className="mt-auto pt-8">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="w-full justify-start gap-3 text-muted-foreground hover:text-foreground"
+              onClick={() => navigate('/')}
+            >
+              <Home className="h-4 w-4" />
+              Back to Home
+            </Button>
           </div>
         </nav>
 

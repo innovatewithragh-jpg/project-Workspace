@@ -1,9 +1,16 @@
-import { Calendar, Users, MoreHorizontal, MessageSquare, Plus, Star } from 'lucide-react';
+import { Calendar, Users, MoreHorizontal, MessageSquare, Plus, Star, Pencil, Trash2, Archive, Copy } from 'lucide-react';
 import { Project } from '@/types';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
 
 interface ProjectCardProps {
@@ -12,6 +19,10 @@ interface ProjectCardProps {
   onQuickChat?: () => void;
   onQuickTask?: () => void;
   onTogglePin?: () => void;
+  onEdit?: () => void;
+  onDuplicate?: () => void;
+  onArchive?: () => void;
+  onDelete?: () => void;
 }
 
 const statusVariants: Record<Project['status'], 'planning' | 'active' | 'paused' | 'done'> = {
@@ -34,6 +45,10 @@ export function ProjectCard({
   onQuickChat,
   onQuickTask,
   onTogglePin,
+  onEdit,
+  onDuplicate,
+  onArchive,
+  onDelete,
 }: ProjectCardProps) {
   const progressPercent = project.tasksTotal > 0 
     ? Math.round((project.tasksCompleted / project.tasksTotal) * 100) 
@@ -66,16 +81,43 @@ export function ProjectCard({
             <p className="text-sm text-muted-foreground truncate">{project.description}</p>
           )}
         </div>
-        <Button
-          variant="ghost"
-          size="icon-sm"
-          className="opacity-0 group-hover:opacity-100 transition-all duration-200 ml-2 hover:bg-surface-hover"
-          onClick={(e) => {
-            e.stopPropagation();
-          }}
-        >
-          <MoreHorizontal className="h-4 w-4" />
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              className="opacity-0 group-hover:opacity-100 transition-all duration-200 ml-2 hover:bg-surface-hover"
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+            >
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-48 bg-popover z-50" onClick={(e) => e.stopPropagation()}>
+            <DropdownMenuItem onClick={() => onTogglePin?.()}>
+              <Star className="h-4 w-4 mr-2" />
+              {project.isPinned ? 'Unpin project' : 'Pin project'}
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => onEdit?.()}>
+              <Pencil className="h-4 w-4 mr-2" />
+              Edit project
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => onDuplicate?.()}>
+              <Copy className="h-4 w-4 mr-2" />
+              Duplicate
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => onArchive?.()}>
+              <Archive className="h-4 w-4 mr-2" />
+              Archive
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => onDelete?.()} className="text-destructive focus:text-destructive">
+              <Trash2 className="h-4 w-4 mr-2" />
+              Delete
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
       {/* Status & Due date */}

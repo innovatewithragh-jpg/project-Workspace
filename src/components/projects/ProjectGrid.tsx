@@ -87,10 +87,6 @@ export function ProjectGrid({ projects, onProjectClick }: ProjectGridProps) {
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
-
-        <Button variant="ghost" size="icon-sm" className="hover:bg-surface-hover">
-          <Grid className="h-4 w-4" />
-        </Button>
       </div>
 
       {/* Pinned section */}

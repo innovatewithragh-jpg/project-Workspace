@@ -15,6 +15,7 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { KanbanBoard } from '@/components/tasks/KanbanBoard';
 import { MyTasksList } from '@/components/tasks/MyTasksList';
+import { FilesSection } from '@/components/files/FilesSection';
 import { TaskModal } from '@/components/tasks/TaskModal';
 import { CreateTaskModal } from '@/components/tasks/CreateTaskModal';
 import { ProjectChat } from '@/components/chat/ProjectChat';
@@ -210,11 +211,7 @@ export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
               <ProjectChat messages={chatMessages.filter((m) => m.projectId === project.id)} />
             </div>
           )}
-          {activeView === 'files' && (
-            <div className="text-center py-12 text-muted-foreground">
-              No files uploaded yet
-            </div>
-          )}
+          {activeView === 'files' && <FilesSection />}
           {activeView === 'settings' && (
             <div className="text-center py-12 text-muted-foreground">
               Settings coming soon

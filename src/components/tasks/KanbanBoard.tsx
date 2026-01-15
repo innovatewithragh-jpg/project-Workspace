@@ -97,19 +97,19 @@ export function KanbanBoard({ tasks, onTaskClick, onAddTask }: KanbanBoardProps)
                       <TaskCard task={task} onClick={() => onTaskClick?.(task)} />
                     </div>
                   ))}
+
+                  {/* Add task button - placed under task cards */}
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="w-full justify-start gap-2 text-muted-foreground hover:text-foreground"
+                    onClick={() => onAddTask?.(column.id)}
+                  >
+                    <Plus className="h-4 w-4" />
+                    Create Task
+                  </Button>
                 </div>
               </ScrollArea>
-
-              {/* Add task button */}
-              <Button
-                variant="ghost"
-                size="sm"
-                className="w-full mt-2 justify-start gap-2 text-muted-foreground hover:text-foreground"
-                onClick={() => onAddTask?.(column.id)}
-              >
-                <Plus className="h-4 w-4" />
-                Create
-              </Button>
             </div>
           </div>
         );

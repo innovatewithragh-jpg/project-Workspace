@@ -178,19 +178,13 @@ export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
               {navItems.find((n) => n.id === activeView)?.label}
             </h3>
           </div>
-          <div className="flex items-center gap-2">
-            <div className="flex -space-x-2">
-              {project.members.slice(0, 3).map((member) => (
-                <Avatar key={member.id} className="h-7 w-7 border-2 border-background">
-                  <AvatarImage src={member.avatar} />
-                  <AvatarFallback className="text-xs">{member.name.charAt(0)}</AvatarFallback>
-                </Avatar>
-              ))}
-            </div>
-            <Button variant="outline" size="sm" className="gap-2">
-              Share
-              <ChevronDown className="h-3 w-3" />
-            </Button>
+          <div className="flex -space-x-2">
+            {project.members.slice(0, 3).map((member) => (
+              <Avatar key={member.id} className="h-7 w-7 border-2 border-background">
+                <AvatarImage src={member.avatar} />
+                <AvatarFallback className="text-xs">{member.name.charAt(0)}</AvatarFallback>
+              </Avatar>
+            ))}
           </div>
         </header>
 

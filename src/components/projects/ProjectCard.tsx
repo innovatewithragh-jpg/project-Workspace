@@ -1,4 +1,4 @@
-import { Calendar, Users, MoreHorizontal, MessageSquare, Plus, Star, Pencil, Trash2 } from 'lucide-react';
+import { Calendar, Users, MoreHorizontal, Star, Pencil, Trash2, CheckCircle2 } from 'lucide-react';
 import { Project } from '@/types';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -16,8 +16,6 @@ import { cn } from '@/lib/utils';
 interface ProjectCardProps {
   project: Project;
   onClick?: () => void;
-  onQuickChat?: () => void;
-  onQuickTask?: () => void;
   onTogglePin?: () => void;
   onEdit?: () => void;
   onDelete?: () => void;
@@ -40,12 +38,11 @@ const statusLabels: Record<Project['status'], string> = {
 export function ProjectCard({
   project,
   onClick,
-  onQuickChat,
-  onQuickTask,
   onTogglePin,
   onEdit,
   onDelete,
 }: ProjectCardProps) {
+  const pendingTasks = project.tasksTotal - project.tasksCompleted;
   const progressPercent = project.tasksTotal > 0 
     ? Math.round((project.tasksCompleted / project.tasksTotal) * 100) 
     : 0;
@@ -142,30 +139,10 @@ export function ProjectCard({
           )}
         </div>
 
-        {/* Quick actions */}
-        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200">
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            className="hover:bg-primary/10 hover:text-primary"
-            onClick={(e) => {
-              e.stopPropagation();
-              onQuickTask?.();
-            }}
-          >
-            <Plus className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon-sm"
-            className="hover:bg-primary/10 hover:text-primary"
-            onClick={(e) => {
-              e.stopPropagation();
-              onQuickChat?.();
-            }}
-          >
-            <MessageSquare className="h-4 w-4" />
-          </Button>
+        {/* Pending Tasks */}
+        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+          <CheckCircle2 className="h-3.5 w-3.5" />
+          <span>{pendingTasks} pending</span>
         </div>
       </div>
     </div>

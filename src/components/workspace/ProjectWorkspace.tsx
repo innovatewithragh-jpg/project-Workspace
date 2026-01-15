@@ -7,6 +7,7 @@ import {
   Folder,
   Settings,
   Users,
+  Info,
 } from 'lucide-react';
 import { Project, Task, TaskStatus } from '@/types';
 import { Button } from '@/components/ui/button';
@@ -18,7 +19,7 @@ import { FilesSection } from '@/components/files/FilesSection';
 import { TaskModal } from '@/components/tasks/TaskModal';
 import { CreateTaskModal } from '@/components/tasks/CreateTaskModal';
 import { ProjectChat } from '@/components/chat/ProjectChat';
-import { ProjectDetailsSheet } from '@/components/projects/ProjectDetailsSheet';
+import { ProjectDetailsView } from '@/components/projects/ProjectDetailsView';
 import { tasks as mockTasks, chatMessages, projects } from '@/data/mockData';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
@@ -28,7 +29,7 @@ interface ProjectWorkspaceProps {
   onBack: () => void;
 }
 
-type ViewType = 'board' | 'list' | 'chat' | 'files' | 'settings';
+type ViewType = 'board' | 'list' | 'chat' | 'files' | 'settings' | 'project';
 
 const statusLabels: Record<Project['status'], string> = {
   planning: 'Planning',
@@ -50,7 +51,6 @@ export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
   const [createTaskStatus, setCreateTaskStatus] = useState<TaskStatus>('todo');
-  const [isProjectDetailsOpen, setIsProjectDetailsOpen] = useState(false);
   const { toast } = useToast();
 
   const projectTasks = mockTasks.filter((t) => t.projectId === project.id);
@@ -82,6 +82,7 @@ export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
   };
 
   const navItems: { id: ViewType; icon: typeof LayoutGrid; label: string }[] = [
+    { id: 'project', icon: Info, label: 'Project' },
     { id: 'board', icon: LayoutGrid, label: 'Board' },
     { id: 'list', icon: ListTodo, label: 'My Tasks' },
     { id: 'chat', icon: MessageSquare, label: 'Chat' },
@@ -104,12 +105,13 @@ export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
             <ArrowLeft className="h-4 w-4" />
             Back
           </Button>
-          <h2 
-            className="font-semibold text-foreground truncate cursor-pointer hover:text-primary transition-colors"
-            onClick={() => setIsProjectDetailsOpen(true)}
+          <Button 
+            variant="ghost"
+            className="font-semibold text-foreground truncate p-0 h-auto hover:text-primary justify-start"
+            onClick={() => setActiveView('project')}
           >
             {project.title}
-          </h2>
+          </Button>
           <Badge variant={statusVariants[project.status]} className="mt-2">
             {statusLabels[project.status]}
           </Badge>
@@ -196,6 +198,7 @@ export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
 
         {/* Content */}
         <div className="flex-1 overflow-auto p-4">
+          {activeView === 'project' && <ProjectDetailsView project={project} />}
           {activeView === 'board' && (
             <KanbanBoard tasks={projectTasks} onTaskClick={handleTaskClick} onAddTask={handleAddTask} />
           )}
@@ -233,13 +236,6 @@ export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
         onOpenChange={setIsCreateTaskModalOpen}
         initialStatus={createTaskStatus}
         onCreateTask={handleCreateTask}
-      />
-
-      {/* Project details sheet */}
-      <ProjectDetailsSheet
-        project={project}
-        open={isProjectDetailsOpen}
-        onOpenChange={setIsProjectDetailsOpen}
       />
     </div>
   );

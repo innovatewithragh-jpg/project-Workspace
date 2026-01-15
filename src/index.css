@@ -6,50 +6,50 @@
 
 @layer base {
   :root {
-    /* Light mode kept for potential future use */
-    --background: 220 16% 96%;
-    --foreground: 220 20% 10%;
+    /* Light mode - GoStuds Brand Colors */
+    --background: 210 20% 98%;
+    --foreground: 217 33% 17%;
 
     --card: 0 0% 100%;
-    --card-foreground: 220 20% 10%;
+    --card-foreground: 217 33% 17%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 220 20% 10%;
+    --popover-foreground: 217 33% 17%;
 
-    --primary: 210 100% 40%;
+    --primary: 209 90% 40%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 220 14% 90%;
-    --secondary-foreground: 220 20% 10%;
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 0 0% 100%;
 
-    --muted: 220 14% 90%;
-    --muted-foreground: 220 10% 45%;
+    --muted: 210 20% 94%;
+    --muted-foreground: 217 20% 45%;
 
-    --accent: 210 100% 40%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 200 100% 83%;
+    --accent-foreground: 217 33% 17%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 14% 85%;
-    --input: 220 14% 85%;
-    --ring: 210 100% 40%;
+    --border: 210 20% 88%;
+    --input: 210 20% 88%;
+    --ring: 209 90% 40%;
 
     --radius: 0.625rem;
 
-    --sidebar-background: 220 16% 98%;
-    --sidebar-foreground: 220 10% 30%;
-    --sidebar-primary: 210 100% 40%;
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 217 33% 17%;
+    --sidebar-primary: 209 90% 40%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 14% 94%;
-    --sidebar-accent-foreground: 220 20% 10%;
-    --sidebar-border: 220 14% 90%;
-    --sidebar-ring: 210 100% 40%;
+    --sidebar-accent: 200 100% 93%;
+    --sidebar-accent-foreground: 217 33% 17%;
+    --sidebar-border: 210 20% 90%;
+    --sidebar-ring: 209 90% 40%;
 
     /* GoStuds Custom Tokens */
-    --surface: 220 16% 98%;
+    --surface: 210 20% 98%;
     --surface-elevated: 0 0% 100%;
-    --surface-hover: 220 14% 94%;
+    --surface-hover: 210 20% 95%;
     
     --success: 142 76% 36%;
     --success-foreground: 0 0% 100%;
@@ -62,8 +62,8 @@
     
     --status-planning: 38 92% 50%;
     --status-active: 142 76% 36%;
-    --status-paused: 220 10% 50%;
-    --status-done: 210 100% 40%;
+    --status-paused: 217 20% 50%;
+    --status-done: 209 90% 40%;
   }
 
   .dark {

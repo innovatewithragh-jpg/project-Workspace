@@ -34,20 +34,9 @@ export function TopBar({ onNewProject, onNewTask }: TopBarProps) {
           <span className="font-semibold text-foreground hidden sm:block">GoStuds</span>
         </div>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="sm" className="gap-1">
-              <span className="text-sm">My Workspace</span>
-              <ChevronDown className="h-3 w-3" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-48">
-            <DropdownMenuItem>My Workspace</DropdownMenuItem>
-            <DropdownMenuItem>Team Alpha</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Create workspace</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <div className="flex items-center">
+          <span className="text-sm font-medium text-foreground">My Workspace</span>
+        </div>
       </div>
 
       {/* Center - Search */}

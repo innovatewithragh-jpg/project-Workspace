@@ -91,16 +91,6 @@ export function ProjectCard({
         )}
       </div>
 
-      {/* Progress */}
-      <div className="mb-4">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-xs text-muted-foreground font-medium">Progress</span>
-          <span className="text-xs font-semibold text-foreground">
-            {project.tasksCompleted}/{project.tasksTotal}
-          </span>
-        </div>
-        <Progress value={progressPercent} className="h-2" />
-      </div>
 
       {/* Footer */}
       <div className="flex items-center justify-between pt-3 border-t border-border/50">

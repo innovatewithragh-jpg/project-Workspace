@@ -185,24 +185,26 @@ export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
 
         {/* Content */}
         <div className="flex-1 overflow-auto p-4">
-          {activeView === 'project' && <ProjectDetailsView project={project} />}
-          {activeView === 'board' && (
-            <KanbanBoard tasks={projectTasks} onTaskClick={handleTaskClick} onAddTask={handleAddTask} />
-          )}
-          {activeView === 'list' && (
-            <MyTasksList 
-              tasks={mockTasks} 
-              projects={projects} 
-              onTaskClick={handleTaskClick} 
-            />
-          )}
-          {activeView === 'chat' && (
-            <div className="h-full -m-4">
-              <ProjectChat messages={chatMessages.filter((m) => m.projectId === project.id)} />
-            </div>
-          )}
-          {activeView === 'files' && <FilesSection />}
-          {activeView === 'settings' && <SettingsView project={project} />}
+          <div className="ml-[490px] mr-[230px]">
+            {activeView === 'project' && <ProjectDetailsView project={project} />}
+            {activeView === 'board' && (
+              <KanbanBoard tasks={projectTasks} onTaskClick={handleTaskClick} onAddTask={handleAddTask} />
+            )}
+            {activeView === 'list' && (
+              <MyTasksList 
+                tasks={mockTasks} 
+                projects={projects} 
+                onTaskClick={handleTaskClick} 
+              />
+            )}
+            {activeView === 'chat' && (
+              <div className="h-full">
+                <ProjectChat messages={chatMessages.filter((m) => m.projectId === project.id)} />
+              </div>
+            )}
+            {activeView === 'files' && <FilesSection />}
+            {activeView === 'settings' && <SettingsView project={project} />}
+          </div>
         </div>
       </main>
 

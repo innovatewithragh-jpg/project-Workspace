@@ -2,7 +2,7 @@ import { useState } from 'react';
 import {
   ArrowLeft,
   LayoutGrid,
-  List,
+  ListTodo,
   MessageSquare,
   Folder,
   Settings,
@@ -14,9 +14,10 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { KanbanBoard } from '@/components/tasks/KanbanBoard';
+import { MyTasksList } from '@/components/tasks/MyTasksList';
 import { TaskModal } from '@/components/tasks/TaskModal';
 import { ProjectChat } from '@/components/chat/ProjectChat';
-import { tasks as mockTasks, chatMessages } from '@/data/mockData';
+import { tasks as mockTasks, chatMessages, projects } from '@/data/mockData';
 import { cn } from '@/lib/utils';
 
 interface ProjectWorkspaceProps {
@@ -54,7 +55,7 @@ export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
 
   const navItems: { id: ViewType; icon: typeof LayoutGrid; label: string }[] = [
     { id: 'board', icon: LayoutGrid, label: 'Board' },
-    { id: 'list', icon: List, label: 'List' },
+    { id: 'list', icon: ListTodo, label: 'My Tasks' },
     { id: 'chat', icon: MessageSquare, label: 'Chat' },
     { id: 'files', icon: Folder, label: 'Files' },
     { id: 'settings', icon: Settings, label: 'Settings' },
@@ -172,9 +173,11 @@ export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
             <KanbanBoard tasks={projectTasks} onTaskClick={handleTaskClick} />
           )}
           {activeView === 'list' && (
-            <div className="text-center py-12 text-muted-foreground">
-              List view coming soon
-            </div>
+            <MyTasksList 
+              tasks={mockTasks} 
+              projects={projects} 
+              onTaskClick={handleTaskClick} 
+            />
           )}
           {activeView === 'chat' && (
             <div className="h-full -m-4">

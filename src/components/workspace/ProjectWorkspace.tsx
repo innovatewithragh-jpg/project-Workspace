@@ -145,9 +145,9 @@ export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
           {/* Back to Home button - positioned at bottom with gap */}
           <div className="mt-auto pt-8">
             <Button
-              variant="ghost"
+              variant="outline"
               size="sm"
-              className="w-full justify-start gap-3 text-muted-foreground hover:text-foreground"
+              className="w-full justify-start gap-3 border-border/50 bg-surface-hover/50 hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all"
               onClick={() => navigate('/')}
             >
               <Home className="h-4 w-4" />

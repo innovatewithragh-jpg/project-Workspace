@@ -256,46 +256,36 @@ export function SettingsView({ project }: SettingsViewProps) {
         </Button>
       </div>
 
-      {/* Danger Zone */}
+      {/* Delete Project */}
       <Card className="border-destructive/50">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-destructive">
-            <Trash2 className="h-5 w-5" />
-            Danger Zone
-          </CardTitle>
-          <CardDescription>
-            Irreversible and destructive actions
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-center justify-between">
-            <div className="space-y-0.5">
-              <p className="font-medium">Delete this project</p>
-              <p className="text-sm text-muted-foreground">
-                Once you delete a project, there is no going back.
-              </p>
+        <CardContent className="flex items-center justify-between py-4">
+          <div className="flex items-center gap-3">
+            <Trash2 className="h-5 w-5 text-destructive" />
+            <div>
+              <p className="font-medium">Delete Project</p>
+              <p className="text-sm text-muted-foreground">This action cannot be undone</p>
             </div>
-            <AlertDialog>
-              <AlertDialogTrigger asChild>
-                <Button variant="destructive">Delete Project</Button>
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
-                  <AlertDialogDescription>
-                    This action cannot be undone. This will permanently delete the project
-                    "{project.title}" and remove all associated tasks, files, and data.
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
-                    Delete Project
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
           </div>
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive" size="sm">Delete</Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete the project
+                  "{project.title}" and remove all associated tasks, files, and data.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction onClick={handleDelete} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+                  Delete Project
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </CardContent>
       </Card>
     </div>

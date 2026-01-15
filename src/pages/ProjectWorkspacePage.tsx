@@ -26,7 +26,7 @@ const ProjectWorkspacePage = () => {
   return (
     <div className="min-h-screen bg-background">
       <TopBar />
-      <ProjectWorkspace project={project} onBack={() => navigate(`/project/${id}`)} />
+      <ProjectWorkspace project={project} onBack={() => navigate('/')} />
     </div>
   );
 };

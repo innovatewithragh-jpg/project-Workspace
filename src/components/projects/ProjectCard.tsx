@@ -140,9 +140,8 @@ export function ProjectCard({
         </div>
 
         {/* Active Tasks */}
-        <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-          <CheckCircle2 className="h-3.5 w-3.5" />
-          <span>{activeTasks} active</span>
+        <div className="text-xs text-muted-foreground">
+          {activeTasks} active
         </div>
       </div>
     </div>

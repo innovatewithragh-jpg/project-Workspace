@@ -7,7 +7,7 @@ import {
   Folder,
   Settings,
   Users,
-  Info,
+  Box,
 } from 'lucide-react';
 import { Project, Task, TaskStatus } from '@/types';
 import { Button } from '@/components/ui/button';
@@ -82,7 +82,7 @@ export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
   };
 
   const navItems: { id: ViewType; icon: typeof LayoutGrid; label: string }[] = [
-    { id: 'project', icon: Info, label: 'Project' },
+    { id: 'project', icon: Box, label: 'Project' },
     { id: 'board', icon: LayoutGrid, label: 'Board' },
     { id: 'list', icon: ListTodo, label: 'My Tasks' },
     { id: 'chat', icon: MessageSquare, label: 'Chat' },

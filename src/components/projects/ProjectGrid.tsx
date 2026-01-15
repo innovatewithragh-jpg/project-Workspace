@@ -51,20 +51,20 @@ export function ProjectGrid({ projects, onProjectClick }: ProjectGridProps) {
   }, [projects, sortBy, filterBy]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Toolbar */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="gap-2">
+              <Button variant="outline" size="sm" className="gap-2 bg-card/50 hover:bg-card border-border/50">
                 <Filter className="h-4 w-4" />
                 <span className="hidden sm:inline">
                   {filterBy === 'all' ? 'All Projects' : filterBy.charAt(0).toUpperCase() + filterBy.slice(1)}
                 </span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">
+            <DropdownMenuContent align="start" className="bg-popover/95 backdrop-blur-xl border-border/50">
               <DropdownMenuItem onClick={() => setFilterBy('all')}>All Projects</DropdownMenuItem>
               <DropdownMenuItem onClick={() => setFilterBy('active')}>Active</DropdownMenuItem>
               <DropdownMenuItem onClick={() => setFilterBy('planning')}>Planning</DropdownMenuItem>
@@ -75,12 +75,12 @@ export function ProjectGrid({ projects, onProjectClick }: ProjectGridProps) {
 
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="gap-2">
+              <Button variant="outline" size="sm" className="gap-2 bg-card/50 hover:bg-card border-border/50">
                 <SortAsc className="h-4 w-4" />
                 <span className="hidden sm:inline">Sort</span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="start">
+            <DropdownMenuContent align="start" className="bg-popover/95 backdrop-blur-xl border-border/50">
               <DropdownMenuItem onClick={() => setSortBy('updated')}>Recently Updated</DropdownMenuItem>
               <DropdownMenuItem onClick={() => setSortBy('name')}>Name</DropdownMenuItem>
               <DropdownMenuItem onClick={() => setSortBy('dueDate')}>Due Date</DropdownMenuItem>
@@ -88,7 +88,7 @@ export function ProjectGrid({ projects, onProjectClick }: ProjectGridProps) {
           </DropdownMenu>
         </div>
 
-        <Button variant="ghost" size="icon-sm">
+        <Button variant="ghost" size="icon-sm" className="hover:bg-surface-hover">
           <Grid className="h-4 w-4" />
         </Button>
       </div>
@@ -96,17 +96,18 @@ export function ProjectGrid({ projects, onProjectClick }: ProjectGridProps) {
       {/* Pinned section */}
       {pinnedProjects.length > 0 && (
         <div>
-          <div className="flex items-center gap-2 mb-3">
+          <div className="flex items-center gap-2 mb-4">
             <Star className="h-4 w-4 text-warning" />
-            <h2 className="text-sm font-medium text-muted-foreground">Pinned</h2>
+            <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Pinned</h2>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-            {pinnedProjects.map((project) => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                onClick={() => onProjectClick?.(project)}
-              />
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+            {pinnedProjects.map((project, index) => (
+              <div key={project.id} className="animate-enter" style={{ animationDelay: `${index * 50}ms` }}>
+                <ProjectCard
+                  project={project}
+                  onClick={() => onProjectClick?.(project)}
+                />
+              </div>
             ))}
           </div>
         </div>
@@ -115,20 +116,24 @@ export function ProjectGrid({ projects, onProjectClick }: ProjectGridProps) {
       {/* All projects */}
       <div>
         {pinnedProjects.length > 0 && (
-          <h2 className="text-sm font-medium text-muted-foreground mb-3">All Projects</h2>
+          <h2 className="text-sm font-semibold text-muted-foreground mb-4 uppercase tracking-wider">All Projects</h2>
         )}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-          {filteredProjects.map((project) => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              onClick={() => onProjectClick?.(project)}
-            />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          {filteredProjects.map((project, index) => (
+            <div key={project.id} className="animate-enter" style={{ animationDelay: `${index * 50}ms` }}>
+              <ProjectCard
+                project={project}
+                onClick={() => onProjectClick?.(project)}
+              />
+            </div>
           ))}
         </div>
         {filteredProjects.length === 0 && (
-          <div className="text-center py-12">
-            <p className="text-muted-foreground">No projects match your filters</p>
+          <div className="text-center py-16 px-4">
+            <div className="w-16 h-16 rounded-full bg-surface-hover mx-auto mb-4 flex items-center justify-center">
+              <Grid className="h-8 w-8 text-muted-foreground" />
+            </div>
+            <p className="text-muted-foreground text-lg">No projects match your filters</p>
           </div>
         )}
       </div>

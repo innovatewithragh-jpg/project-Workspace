@@ -42,32 +42,34 @@ export function ProjectCard({
   return (
     <div
       className={cn(
-        "group relative rounded-xl border border-border bg-card p-4 transition-all duration-200 cursor-pointer",
-        "hover:border-primary/50 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-0.5"
+        "group relative rounded-2xl border border-border/50 bg-card/80 backdrop-blur-sm p-5 cursor-pointer",
+        "transition-all duration-300 ease-out",
+        "hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-1",
+        "hover:bg-card"
       )}
       onClick={onClick}
     >
       {/* Pin indicator */}
       {project.isPinned && (
-        <div className="absolute -top-1 -right-1">
-          <div className="h-5 w-5 rounded-full bg-warning flex items-center justify-center">
-            <Star className="h-3 w-3 text-warning-foreground fill-current" />
+        <div className="absolute -top-1.5 -right-1.5">
+          <div className="h-6 w-6 rounded-full bg-gradient-to-br from-warning to-warning/70 flex items-center justify-center shadow-lg shadow-warning/30">
+            <Star className="h-3.5 w-3.5 text-warning-foreground fill-current" />
           </div>
         </div>
       )}
 
       {/* Header */}
-      <div className="flex items-start justify-between mb-3">
+      <div className="flex items-start justify-between mb-4">
         <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-foreground truncate mb-1">{project.title}</h3>
+          <h3 className="font-semibold text-foreground truncate mb-1.5 text-base">{project.title}</h3>
           {project.description && (
-            <p className="text-xs text-muted-foreground truncate">{project.description}</p>
+            <p className="text-sm text-muted-foreground truncate">{project.description}</p>
           )}
         </div>
         <Button
           variant="ghost"
           size="icon-sm"
-          className="opacity-0 group-hover:opacity-100 transition-opacity ml-2"
+          className="opacity-0 group-hover:opacity-100 transition-all duration-200 ml-2 hover:bg-surface-hover"
           onClick={(e) => {
             e.stopPropagation();
           }}
@@ -77,12 +79,12 @@ export function ProjectCard({
       </div>
 
       {/* Status & Due date */}
-      <div className="flex items-center gap-2 mb-3">
-        <Badge variant={statusVariants[project.status]}>
+      <div className="flex items-center gap-2.5 mb-4">
+        <Badge variant={statusVariants[project.status]} className="shadow-sm">
           {statusLabels[project.status]}
         </Badge>
         {project.dueDate && (
-          <div className="flex items-center gap-1 text-xs text-muted-foreground">
+          <div className="flex items-center gap-1.5 text-xs text-muted-foreground bg-surface-hover/50 px-2 py-1 rounded-md">
             <Calendar className="h-3 w-3" />
             <span>{project.dueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
           </div>
@@ -90,30 +92,30 @@ export function ProjectCard({
       </div>
 
       {/* Progress */}
-      <div className="mb-3">
-        <div className="flex items-center justify-between mb-1">
-          <span className="text-xs text-muted-foreground">Progress</span>
-          <span className="text-xs font-medium text-foreground">
+      <div className="mb-4">
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-xs text-muted-foreground font-medium">Progress</span>
+          <span className="text-xs font-semibold text-foreground">
             {project.tasksCompleted}/{project.tasksTotal}
           </span>
         </div>
-        <Progress value={progressPercent} className="h-1.5" />
+        <Progress value={progressPercent} className="h-2" />
       </div>
 
       {/* Footer */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between pt-3 border-t border-border/50">
         {/* Avatars */}
         <div className="flex items-center">
           <div className="flex -space-x-2">
             {project.members.slice(0, 3).map((member) => (
-              <Avatar key={member.id} className="h-6 w-6 border-2 border-card">
+              <Avatar key={member.id} className="h-7 w-7 border-2 border-card ring-2 ring-background/50">
                 <AvatarImage src={member.avatar} alt={member.name} />
-                <AvatarFallback className="text-xs">{member.name.charAt(0)}</AvatarFallback>
+                <AvatarFallback className="text-xs bg-primary/10 text-primary">{member.name.charAt(0)}</AvatarFallback>
               </Avatar>
             ))}
           </div>
           {project.members.length > 3 && (
-            <span className="ml-2 text-xs text-muted-foreground flex items-center gap-0.5">
+            <span className="ml-2 text-xs text-muted-foreground flex items-center gap-1 bg-surface-hover/50 px-2 py-0.5 rounded-full">
               <Users className="h-3 w-3" />
               +{project.members.length - 3}
             </span>
@@ -121,10 +123,11 @@ export function ProjectCard({
         </div>
 
         {/* Quick actions */}
-        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-all duration-200">
           <Button
             variant="ghost"
             size="icon-sm"
+            className="hover:bg-primary/10 hover:text-primary"
             onClick={(e) => {
               e.stopPropagation();
               onQuickTask?.();
@@ -135,6 +138,7 @@ export function ProjectCard({
           <Button
             variant="ghost"
             size="icon-sm"
+            className="hover:bg-primary/10 hover:text-primary"
             onClick={(e) => {
               e.stopPropagation();
               onQuickChat?.();

@@ -15,13 +15,13 @@ const Index = () => {
   return (
     <div className="min-h-screen bg-background">
       <TopBar />
-      <div className="max-w-7xl mx-auto px-4 py-6">
-        <div className="flex gap-6">
+      <div className="max-w-7xl mx-auto px-6 py-8">
+        <div className="flex gap-8">
           {/* Main content */}
           <div className="flex-1">
-            <div className="mb-6">
-              <h1 className="text-2xl font-bold text-foreground mb-1">Projects</h1>
-              <p className="text-muted-foreground">
+            <div className="mb-8">
+              <h1 className="text-3xl font-bold text-foreground mb-2 tracking-tight">Projects</h1>
+              <p className="text-muted-foreground text-base">
                 Manage your team's projects and tasks in one place
               </p>
             </div>
@@ -30,7 +30,9 @@ const Index = () => {
 
           {/* Activity sidebar */}
           <aside className="hidden xl:block w-80 flex-shrink-0">
-            <ActivityFeed activities={activityFeed} />
+            <div className="sticky top-20">
+              <ActivityFeed activities={activityFeed} />
+            </div>
           </aside>
         </div>
       </div>

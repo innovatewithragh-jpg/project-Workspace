@@ -93,8 +93,8 @@ export function ProjectCard({
 
       {/* Progress & Tasks Row */}
       <div className="flex items-center justify-between mb-4 text-xs">
-        <span className="text-muted-foreground font-medium">{progressPercent}% complete</span>
-        <span className="text-muted-foreground">{project.tasksTotal} tasks</span>
+        <span className="text-muted-foreground font-medium">Progress</span>
+        <span className="text-muted-foreground">{project.tasksTotal} Actions</span>
       </div>
 
       {/* Footer */}

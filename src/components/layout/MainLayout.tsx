@@ -1,6 +1,5 @@
 import { ReactNode } from 'react';
 import { TopBar } from './TopBar';
-import { Sidebar } from './Sidebar';
 
 interface MainLayoutProps {
   children: ReactNode;
@@ -14,16 +13,10 @@ export function MainLayout({ children }: MainLayoutProps) {
         {/* Top Bar */}
         <TopBar />
         
-        {/* Content area with sidebar and main feed */}
-        <div className="flex flex-1 overflow-hidden">
-          {/* Left Sidebar */}
-          <Sidebar />
-          
-          {/* Center Feed - only scrollable area */}
-          <main className="flex-1 bg-surface-feed overflow-y-auto scrollbar-hide">
-            {children}
-          </main>
-        </div>
+        {/* Center Feed - only scrollable area */}
+        <main className="flex-1 bg-surface-feed overflow-y-auto scrollbar-hide">
+          {children}
+        </main>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   ArrowLeft,
@@ -12,11 +12,15 @@ import {
   Home,
   User,
   FolderOpen,
+  Pencil,
+  Check,
+  X,
 } from 'lucide-react';
 import { Project, Task, TaskStatus } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Input } from '@/components/ui/input';
 import { KanbanBoard } from '@/components/tasks/KanbanBoard';
 import { MyTasksList } from '@/components/tasks/MyTasksList';
 import { FilesSection } from '@/components/files/FilesSection';
@@ -61,7 +65,47 @@ export function UnifiedWorkspace() {
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
   const [createTaskStatus, setCreateTaskStatus] = useState<TaskStatus>('todo');
+  const [quote, setQuote] = useState('"The only way to do great work is to love what you do."');
+  const [isEditingQuote, setIsEditingQuote] = useState(false);
+  const [editQuoteValue, setEditQuoteValue] = useState(quote);
+  const quoteInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (isEditingQuote && quoteInputRef.current) {
+      quoteInputRef.current.focus();
+      quoteInputRef.current.select();
+    }
+  }, [isEditingQuote]);
+
+  const handleStartEditQuote = () => {
+    setEditQuoteValue(quote);
+    setIsEditingQuote(true);
+  };
+
+  const handleSaveQuote = () => {
+    if (editQuoteValue.trim()) {
+      setQuote(editQuoteValue.trim());
+      toast({
+        title: 'Quote updated',
+        description: 'Your workspace quote has been saved.',
+      });
+    }
+    setIsEditingQuote(false);
+  };
+
+  const handleCancelEditQuote = () => {
+    setEditQuoteValue(quote);
+    setIsEditingQuote(false);
+  };
+
+  const handleQuoteKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleSaveQuote();
+    } else if (e.key === 'Escape') {
+      handleCancelEditQuote();
+    }
+  };
 
   const projectTasks = selectedProject 
     ? mockTasks.filter((t) => t.projectId === selectedProject.id)
@@ -151,7 +195,50 @@ export function UnifiedWorkspace() {
               </Badge>
             </>
           ) : (
-            <p className="text-xs text-muted-foreground italic">"The only way to do great work is to love what you do."</p>
+            <div className="group relative">
+              {isEditingQuote ? (
+                <div className="flex flex-col gap-2">
+                  <Input
+                    ref={quoteInputRef}
+                    value={editQuoteValue}
+                    onChange={(e) => setEditQuoteValue(e.target.value)}
+                    onKeyDown={handleQuoteKeyDown}
+                    className="text-xs h-8"
+                    placeholder="Enter your quote..."
+                  />
+                  <div className="flex gap-1">
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      onClick={handleSaveQuote}
+                      className="h-6 w-6 text-success hover:text-success"
+                    >
+                      <Check className="h-3 w-3" />
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon-sm"
+                      onClick={handleCancelEditQuote}
+                      className="h-6 w-6 text-destructive hover:text-destructive"
+                    >
+                      <X className="h-3 w-3" />
+                    </Button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-start gap-2">
+                  <p className="text-xs text-muted-foreground italic flex-1">{quote}</p>
+                  <Button
+                    variant="ghost"
+                    size="icon-sm"
+                    onClick={handleStartEditQuote}
+                    className="h-5 w-5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
+                  >
+                    <Pencil className="h-3 w-3" />
+                  </Button>
+                </div>
+              )}
+            </div>
           )}
         </div>
 

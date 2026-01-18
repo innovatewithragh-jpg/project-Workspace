@@ -15,6 +15,7 @@ import {
   Pencil,
   Check,
   X,
+  Plus,
 } from 'lucide-react';
 import { Project, Task, TaskStatus } from '@/types';
 import { Button } from '@/components/ui/button';
@@ -30,6 +31,7 @@ import { ProjectChat } from '@/components/chat/ProjectChat';
 import { ProjectDetailsView } from '@/components/projects/ProjectDetailsView';
 import { SettingsView } from '@/components/settings/SettingsView';
 import { ProjectGrid } from '@/components/projects/ProjectGrid';
+import { CreateProjectModal } from '@/components/projects/CreateProjectModal';
 import { tasks as mockTasks, chatMessages, projects } from '@/data/mockData';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
@@ -64,6 +66,7 @@ export function UnifiedWorkspace() {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
+  const [isCreateProjectModalOpen, setIsCreateProjectModalOpen] = useState(false);
   const [createTaskStatus, setCreateTaskStatus] = useState<TaskStatus>('todo');
   const [quote, setQuote] = useState(() => {
     const savedQuote = localStorage.getItem('workspace-quote');
@@ -351,12 +354,23 @@ export function UnifiedWorkspace() {
       {/* Main content */}
       <main className="flex-1 flex flex-col overflow-hidden">
         {/* Header with breadcrumb */}
-        <header className="h-12 border-b border-border flex items-center px-4">
+        <header className="h-12 border-b border-border flex items-center justify-between px-4">
           <nav className="flex items-center gap-2 text-sm">
             <span className="text-muted-foreground">My Workspace</span>
             <span className="text-muted-foreground">/</span>
             <span className="font-medium text-foreground">{getHeaderTitle()}</span>
           </nav>
+          
+          {/* Create Project Button */}
+          {activeView === 'projects' && (
+            <Button 
+              onClick={() => setIsCreateProjectModalOpen(true)}
+              className="gap-2"
+            >
+              <Plus className="h-4 w-4" />
+              Create Project
+            </Button>
+          )}
         </header>
 
         {/* Content */}
@@ -454,6 +468,19 @@ export function UnifiedWorkspace() {
         onOpenChange={setIsCreateTaskModalOpen}
         initialStatus={createTaskStatus}
         onCreateTask={handleCreateTask}
+      />
+
+      {/* Create project modal */}
+      <CreateProjectModal
+        open={isCreateProjectModalOpen}
+        onOpenChange={setIsCreateProjectModalOpen}
+        onCreateProject={(projectData) => {
+          console.log('Creating project:', projectData);
+          toast({
+            title: 'Project created',
+            description: `"${projectData.title}" has been created successfully.`,
+          });
+        }}
       />
     </div>
   );

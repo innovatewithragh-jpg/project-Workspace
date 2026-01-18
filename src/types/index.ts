@@ -40,6 +40,12 @@ export interface Project {
   tasksTotal: number;
   links?: ProjectLink[];
   roles?: ProjectRole[];
+  category?: string;
+  phase?: string;
+  upvotes?: number;
+  duration?: string;
+  imageColor?: string;
+  projectUrl?: string;
 }
 
 export interface Subtask {

@@ -143,10 +143,11 @@ export function UnifiedWorkspace() {
               </Badge>
             </>
           ) : (
-            <div className="px-3 py-2">
-              <h2 className="font-semibold text-foreground">My Workspace</h2>
-              <p className="text-xs text-muted-foreground mt-1 italic">"The only way to do great work is to love what you do."</p>
-            </div>
+            <>
+              <div className="h-9 mb-3" /> {/* Spacer matching Back button height */}
+              <h2 className="font-semibold text-foreground px-3">My Workspace</h2>
+              <p className="text-xs text-muted-foreground mt-2 ml-3 italic">"The only way to do great work is to love what you do."</p>
+            </>
           )}
         </div>
 

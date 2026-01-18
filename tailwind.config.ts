@@ -61,6 +61,7 @@ export default {
           DEFAULT: "hsl(var(--surface))",
           elevated: "hsl(var(--surface-elevated))",
           hover: "hsl(var(--surface-hover))",
+          feed: "hsl(var(--feed-background))",
         },
         success: {
           DEFAULT: "hsl(var(--success))",

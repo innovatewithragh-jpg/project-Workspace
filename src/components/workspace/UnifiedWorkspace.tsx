@@ -171,9 +171,9 @@ export function UnifiedWorkspace() {
     <div className="flex flex-1 overflow-hidden animate-fade-in">
       {/* Left rail */}
       <aside className="w-56 border-r border-border bg-surface flex flex-col">
-        {/* Header section - aligns with main content header */}
-        <div className="h-12 flex items-center px-4">
-          {isProjectSelected ? (
+        {/* Header section - only show when project is selected */}
+        {isProjectSelected && (
+          <div className="h-12 flex items-center px-4">
             <Button
               variant="ghost"
               size="sm"
@@ -183,8 +183,8 @@ export function UnifiedWorkspace() {
               <ArrowLeft className="h-4 w-4" />
               Back
             </Button>
-          ) : null}
-        </div>
+          </div>
+        )}
 
         {/* Project info or quote */}
         <div className="px-4 pt-1 pb-3 border-b border-border">

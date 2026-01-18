@@ -183,9 +183,7 @@ export function UnifiedWorkspace() {
               <ArrowLeft className="h-4 w-4" />
               Back
             </Button>
-          ) : (
-            <h3 className="font-medium text-foreground">My Workspace</h3>
-          )}
+          ) : null}
         </div>
 
         {/* Project info or quote */}

@@ -1,11 +1,7 @@
-import {
-  Search,
-  Bell,
-  MessageSquare,
-  Globe,
-} from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Search, Globe, Bell, MessageCircle } from 'lucide-react';
+import { Input } from '@/components/ui/input';
 import { Link } from 'react-router-dom';
+import gostudsLogo from '@/assets/gostuds-logo.png';
 
 interface TopBarProps {
   onNewProject?: () => void;
@@ -14,42 +10,40 @@ interface TopBarProps {
 
 export function TopBar({ onNewProject, onNewTask }: TopBarProps) {
   return (
-    <header className="h-16 border-b border-border bg-card flex items-center justify-between px-6 sticky top-0 z-50">
+    <header className="h-16 border-b border-border bg-background flex items-center justify-between px-6">
       {/* Logo */}
       <div className="flex items-center">
-        <Link to="/" className="text-2xl font-bold text-foreground tracking-tight">
-          Go<span className="text-primary">Studs</span>
+        <Link to="/">
+          <img src={gostudsLogo} alt="GoStuds" className="h-8" />
         </Link>
       </div>
 
-      {/* Center - Search */}
-      <div className="hidden md:flex flex-1 max-w-xl mx-6">
-        <div className="relative w-full">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-          <input
+      {/* Search Bar */}
+      <div className="flex-1 max-w-md mx-8">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
             type="text"
             placeholder="Search"
-            className="w-full h-10 pl-11 pr-4 rounded-full bg-muted border border-border text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary/50 transition-all"
+            className="pl-10 bg-muted/50 border-border"
           />
         </div>
       </div>
 
-      {/* Right section - Icon buttons with labels */}
+      {/* Right Icons */}
       <div className="flex items-center gap-6">
-        <Button variant="ghost" className="flex flex-col items-center gap-0.5 h-auto py-1 px-2 hover:bg-transparent">
-          <Globe className="h-5 w-5 text-muted-foreground" />
-          <span className="text-xs text-muted-foreground">My Circle</span>
-        </Button>
-
-        <Button variant="ghost" className="flex flex-col items-center gap-0.5 h-auto py-1 px-2 hover:bg-transparent relative">
-          <Bell className="h-5 w-5 text-muted-foreground" />
-          <span className="text-xs text-muted-foreground">Notifications</span>
-        </Button>
-
-        <Button variant="ghost" className="flex flex-col items-center gap-0.5 h-auto py-1 px-2 hover:bg-transparent">
-          <MessageSquare className="h-5 w-5 text-muted-foreground" />
-          <span className="text-xs text-muted-foreground">Messaging</span>
-        </Button>
+        <button className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+          <Globe className="h-5 w-5" />
+          <span className="text-xs">My Circle</span>
+        </button>
+        <button className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+          <Bell className="h-5 w-5" />
+          <span className="text-xs">Notifications</span>
+        </button>
+        <button className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+          <MessageCircle className="h-5 w-5" />
+          <span className="text-xs">Messaging</span>
+        </button>
       </div>
     </header>
   );

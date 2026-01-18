@@ -271,12 +271,12 @@ export function UnifiedWorkspace() {
             selectedProject ? (
               <KanbanBoard tasks={projectTasks} onTaskClick={handleTaskClick} onAddTask={handleAddTask} />
             ) : (
-              <div className="flex flex-col items-center justify-center h-full text-center">
-                <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
-                  <LayoutGrid className="h-8 w-8 text-muted-foreground" />
+              <div className="flex flex-col items-center justify-center h-full text-center animate-fade-in">
+                <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-6">
+                  <LayoutGrid className="h-10 w-10 text-primary" />
                 </div>
-                <h3 className="text-lg font-medium text-foreground mb-2">No Project Selected</h3>
-                <p className="text-muted-foreground max-w-sm">Select a project from the Project tab to view and manage tasks on the board.</p>
+                <h3 className="text-xl font-semibold text-foreground mb-2">Your Task Board Awaits!</h3>
+                <p className="text-muted-foreground max-w-sm">Organize, prioritize, and conquer your tasks with our intuitive kanban board. Pick a project to get started! 🚀</p>
               </div>
             )
           )}
@@ -288,12 +288,12 @@ export function UnifiedWorkspace() {
                 onTaskClick={handleTaskClick} 
               />
             ) : (
-              <div className="flex flex-col items-center justify-center h-full text-center">
-                <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
-                  <ListTodo className="h-8 w-8 text-muted-foreground" />
+              <div className="flex flex-col items-center justify-center h-full text-center animate-fade-in">
+                <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-6">
+                  <ListTodo className="h-10 w-10 text-primary" />
                 </div>
-                <h3 className="text-lg font-medium text-foreground mb-2">No Project Selected</h3>
-                <p className="text-muted-foreground max-w-sm">Select a project from the Project tab to view your assigned tasks.</p>
+                <h3 className="text-xl font-semibold text-foreground mb-2">Ready to Check Things Off?</h3>
+                <p className="text-muted-foreground max-w-sm">Your personal task list is waiting to help you stay on top of everything. Choose a project and let's get productive! ✨</p>
               </div>
             )
           )}
@@ -303,12 +303,12 @@ export function UnifiedWorkspace() {
                 <ProjectChat messages={chatMessages.filter((m) => m.projectId === selectedProject.id)} />
               </div>
             ) : (
-              <div className="flex flex-col items-center justify-center h-full text-center">
-                <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
-                  <MessageSquare className="h-8 w-8 text-muted-foreground" />
+              <div className="flex flex-col items-center justify-center h-full text-center animate-fade-in">
+                <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-6">
+                  <MessageSquare className="h-10 w-10 text-primary" />
                 </div>
-                <h3 className="text-lg font-medium text-foreground mb-2">No Project Selected</h3>
-                <p className="text-muted-foreground max-w-sm">Select a project from the Project tab to access the group chat.</p>
+                <h3 className="text-xl font-semibold text-foreground mb-2">Great Ideas Start with Conversations</h3>
+                <p className="text-muted-foreground max-w-sm">Connect with your team, share updates, and brainstorm together. Jump into a project to start chatting! 💬</p>
               </div>
             )
           )}
@@ -316,12 +316,12 @@ export function UnifiedWorkspace() {
             selectedProject ? (
               <FilesSection />
             ) : (
-              <div className="flex flex-col items-center justify-center h-full text-center">
-                <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
-                  <FolderOpen className="h-8 w-8 text-muted-foreground" />
+              <div className="flex flex-col items-center justify-center h-full text-center animate-fade-in">
+                <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-6">
+                  <FolderOpen className="h-10 w-10 text-primary" />
                 </div>
-                <h3 className="text-lg font-medium text-foreground mb-2">No Project Selected</h3>
-                <p className="text-muted-foreground max-w-sm">Select a project from the Project tab to access project files.</p>
+                <h3 className="text-xl font-semibold text-foreground mb-2">All Your Files, One Place</h3>
+                <p className="text-muted-foreground max-w-sm">Documents, designs, and resources—everything you need, perfectly organized. Open a project to explore! 📁</p>
               </div>
             )
           )}
@@ -329,12 +329,12 @@ export function UnifiedWorkspace() {
             selectedProject ? (
               <SettingsView project={selectedProject} />
             ) : (
-              <div className="flex flex-col items-center justify-center h-full text-center">
-                <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
-                  <Settings className="h-8 w-8 text-muted-foreground" />
+              <div className="flex flex-col items-center justify-center h-full text-center animate-fade-in">
+                <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mb-6">
+                  <Settings className="h-10 w-10 text-primary" />
                 </div>
-                <h3 className="text-lg font-medium text-foreground mb-2">No Project Selected</h3>
-                <p className="text-muted-foreground max-w-sm">Select a project from the Project tab to access project settings.</p>
+                <h3 className="text-xl font-semibold text-foreground mb-2">Customize Your Experience</h3>
+                <p className="text-muted-foreground max-w-sm">Fine-tune notifications, permissions, and preferences to work your way. Select a project to customize! ⚙️</p>
               </div>
             )
           )}

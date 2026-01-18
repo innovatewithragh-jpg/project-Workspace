@@ -10,6 +10,8 @@ import {
   Users,
   Box,
   Home,
+  User,
+  FolderOpen,
 } from 'lucide-react';
 import { Project, Task, TaskStatus } from '@/types';
 import { Button } from '@/components/ui/button';
@@ -151,30 +153,24 @@ export function UnifiedWorkspace() {
         {/* Navigation */}
         <nav className="flex-1 p-2 flex flex-col">
           <div className="space-y-1">
-            {navItems.map((item) => {
-              const isDisabled = item.requiresProject && !isProjectSelected;
+          {navItems.map((item) => {
               const isActive = activeView === item.id || (activeView === 'projects' && item.id === 'project');
               
               return (
                 <button
                   key={item.id}
                   onClick={() => {
-                    if (!isDisabled) {
-                      if (item.id === 'project' && !isProjectSelected) {
-                        setActiveView('projects');
-                      } else {
-                        setActiveView(item.id);
-                      }
+                    if (item.id === 'project' && !isProjectSelected) {
+                      setActiveView('projects');
+                    } else {
+                      setActiveView(item.id);
                     }
                   }}
-                  disabled={isDisabled}
                   className={cn(
                     "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors",
                     isActive
                       ? "bg-primary/10 text-primary font-medium"
-                      : isDisabled
-                        ? "text-muted-foreground/40 cursor-not-allowed"
-                        : "text-muted-foreground hover:text-foreground hover:bg-surface-hover"
+                      : "text-muted-foreground hover:text-foreground hover:bg-surface-hover"
                   )}
                 >
                   <item.icon className="h-4 w-4" />
@@ -243,7 +239,7 @@ export function UnifiedWorkspace() {
                 <div key={member.id} className="flex items-center gap-2">
                   <Avatar className="h-7 w-7 bg-muted">
                     <AvatarFallback className="text-xs bg-muted text-muted-foreground/50">
-                      ?
+                      <User className="h-4 w-4" />
                     </AvatarFallback>
                   </Avatar>
                   <span className="text-sm text-muted-foreground/50">{member.name}</span>
@@ -271,23 +267,77 @@ export function UnifiedWorkspace() {
           {activeView === 'project' && selectedProject && (
             <ProjectDetailsView project={selectedProject} />
           )}
-          {activeView === 'board' && selectedProject && (
-            <KanbanBoard tasks={projectTasks} onTaskClick={handleTaskClick} onAddTask={handleAddTask} />
+          {activeView === 'board' && (
+            selectedProject ? (
+              <KanbanBoard tasks={projectTasks} onTaskClick={handleTaskClick} onAddTask={handleAddTask} />
+            ) : (
+              <div className="flex flex-col items-center justify-center h-full text-center">
+                <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
+                  <LayoutGrid className="h-8 w-8 text-muted-foreground" />
+                </div>
+                <h3 className="text-lg font-medium text-foreground mb-2">No Project Selected</h3>
+                <p className="text-muted-foreground max-w-sm">Select a project from the Project tab to view and manage tasks on the board.</p>
+              </div>
+            )
           )}
-          {activeView === 'list' && selectedProject && (
-            <MyTasksList 
-              tasks={mockTasks} 
-              projects={projects} 
-              onTaskClick={handleTaskClick} 
-            />
+          {activeView === 'list' && (
+            selectedProject ? (
+              <MyTasksList 
+                tasks={mockTasks} 
+                projects={projects} 
+                onTaskClick={handleTaskClick} 
+              />
+            ) : (
+              <div className="flex flex-col items-center justify-center h-full text-center">
+                <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
+                  <ListTodo className="h-8 w-8 text-muted-foreground" />
+                </div>
+                <h3 className="text-lg font-medium text-foreground mb-2">No Project Selected</h3>
+                <p className="text-muted-foreground max-w-sm">Select a project from the Project tab to view your assigned tasks.</p>
+              </div>
+            )
           )}
-          {activeView === 'chat' && selectedProject && (
-            <div className="h-full -m-4">
-              <ProjectChat messages={chatMessages.filter((m) => m.projectId === selectedProject.id)} />
-            </div>
+          {activeView === 'chat' && (
+            selectedProject ? (
+              <div className="h-full -m-4">
+                <ProjectChat messages={chatMessages.filter((m) => m.projectId === selectedProject.id)} />
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center h-full text-center">
+                <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
+                  <MessageSquare className="h-8 w-8 text-muted-foreground" />
+                </div>
+                <h3 className="text-lg font-medium text-foreground mb-2">No Project Selected</h3>
+                <p className="text-muted-foreground max-w-sm">Select a project from the Project tab to access the group chat.</p>
+              </div>
+            )
           )}
-          {activeView === 'files' && selectedProject && <FilesSection />}
-          {activeView === 'settings' && selectedProject && <SettingsView project={selectedProject} />}
+          {activeView === 'files' && (
+            selectedProject ? (
+              <FilesSection />
+            ) : (
+              <div className="flex flex-col items-center justify-center h-full text-center">
+                <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
+                  <FolderOpen className="h-8 w-8 text-muted-foreground" />
+                </div>
+                <h3 className="text-lg font-medium text-foreground mb-2">No Project Selected</h3>
+                <p className="text-muted-foreground max-w-sm">Select a project from the Project tab to access project files.</p>
+              </div>
+            )
+          )}
+          {activeView === 'settings' && (
+            selectedProject ? (
+              <SettingsView project={selectedProject} />
+            ) : (
+              <div className="flex flex-col items-center justify-center h-full text-center">
+                <div className="w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
+                  <Settings className="h-8 w-8 text-muted-foreground" />
+                </div>
+                <h3 className="text-lg font-medium text-foreground mb-2">No Project Selected</h3>
+                <p className="text-muted-foreground max-w-sm">Select a project from the Project tab to access project settings.</p>
+              </div>
+            )
+          )}
         </div>
       </main>
 

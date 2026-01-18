@@ -187,7 +187,7 @@ export function UnifiedWorkspace() {
         )}
 
         {/* Project info or quote */}
-        <div className="px-4 pt-1 pb-3 border-b border-border">
+        <div className="px-4 py-2.5 border-b border-border">
           {isProjectSelected ? (
             <>
               <h2 className="font-semibold text-foreground truncate">

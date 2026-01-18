@@ -20,7 +20,7 @@ export function MainLayout({ children }: MainLayoutProps) {
           <Sidebar />
           
           {/* Center Feed - only scrollable area */}
-          <main className="flex-1 bg-muted overflow-y-auto scrollbar-hide">
+          <main className="flex-1 bg-surface-feed overflow-y-auto scrollbar-hide">
             {children}
           </main>
         </div>

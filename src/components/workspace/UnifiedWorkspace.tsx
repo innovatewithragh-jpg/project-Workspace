@@ -135,24 +135,25 @@ export function UnifiedWorkspace() {
               Back
             </Button>
           ) : (
-            <div>
-              <h3 className="font-medium text-foreground">My Workspace</h3>
-              <p className="text-xs text-muted-foreground italic">"The only way to do great work is to love what you do."</p>
-            </div>
+            <h3 className="font-medium text-foreground">My Workspace</h3>
           )}
         </div>
 
-        {/* Project info - only shown when project is selected */}
-        {isProjectSelected && (
-          <div className="py-3 px-4 border-b border-border">
-            <h2 className="font-semibold text-foreground truncate">
-              {selectedProject.title}
-            </h2>
-            <Badge variant={statusVariants[selectedProject.status]} className="mt-2">
-              {statusLabels[selectedProject.status]}
-            </Badge>
-          </div>
-        )}
+        {/* Project info or quote */}
+        <div className="py-3 px-4 border-b border-border">
+          {isProjectSelected ? (
+            <>
+              <h2 className="font-semibold text-foreground truncate">
+                {selectedProject.title}
+              </h2>
+              <Badge variant={statusVariants[selectedProject.status]} className="mt-2">
+                {statusLabels[selectedProject.status]}
+              </Badge>
+            </>
+          ) : (
+            <p className="text-xs text-muted-foreground italic">"The only way to do great work is to love what you do."</p>
+          )}
+        </div>
 
         {/* Navigation */}
         <nav className="flex-1 p-2 flex flex-col">

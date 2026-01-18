@@ -8,18 +8,18 @@ interface MainLayoutProps {
 
 export function MainLayout({ children }: MainLayoutProps) {
   return (
-    <div className="min-h-screen bg-card">
+    <div className="h-screen bg-card overflow-hidden">
       {/* Inner container with max-width and borders */}
-      <div className="max-w-7xl mx-auto border-x border-border min-h-screen flex flex-col">
+      <div className="max-w-7xl mx-auto border-x border-border h-screen flex flex-col overflow-hidden">
         {/* Top Bar */}
         <TopBar />
         
         {/* Content area with sidebar and main feed */}
-        <div className="flex flex-1">
+        <div className="flex flex-1 overflow-hidden">
           {/* Left Sidebar */}
           <Sidebar />
           
-          {/* Center Feed */}
+          {/* Center Feed - only scrollable area */}
           <main className="flex-1 bg-muted overflow-y-auto scrollbar-hide">
             {children}
           </main>

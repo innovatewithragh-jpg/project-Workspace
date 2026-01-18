@@ -65,7 +65,10 @@ export function UnifiedWorkspace() {
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
   const [createTaskStatus, setCreateTaskStatus] = useState<TaskStatus>('todo');
-  const [quote, setQuote] = useState('"The only way to do great work is to love what you do."');
+  const [quote, setQuote] = useState(() => {
+    const savedQuote = localStorage.getItem('workspace-quote');
+    return savedQuote || '"The only way to do great work is to love what you do."';
+  });
   const [isEditingQuote, setIsEditingQuote] = useState(false);
   const [editQuoteValue, setEditQuoteValue] = useState(quote);
   const quoteInputRef = useRef<HTMLInputElement>(null);
@@ -85,7 +88,9 @@ export function UnifiedWorkspace() {
 
   const handleSaveQuote = () => {
     if (editQuoteValue.trim()) {
-      setQuote(editQuoteValue.trim());
+      const newQuote = editQuoteValue.trim();
+      setQuote(newQuote);
+      localStorage.setItem('workspace-quote', newQuote);
       toast({
         title: 'Quote updated',
         description: 'Your workspace quote has been saved.',

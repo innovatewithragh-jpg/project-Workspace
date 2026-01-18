@@ -229,10 +229,12 @@ export function UnifiedWorkspace() {
                   </div>
                 </div>
               ) : (
-                <div className="flex items-start gap-2 bg-primary/5 rounded-lg p-3 border-l-2 border-primary/30">
-                  <span className="text-primary/40 text-lg leading-none">"</span>
-                  <p className="text-xs text-muted-foreground italic flex-1 leading-relaxed">{quote.replace(/^"|"$/g, '')}</p>
-                  <span className="text-primary/40 text-lg leading-none self-end">"</span>
+                <div className="relative bg-primary/5 rounded-lg p-3 border-l-2 border-primary/30">
+                  <p className="text-xs text-muted-foreground italic leading-relaxed">
+                    <span className="text-primary/40 text-lg leading-none mr-1">"</span>
+                    {quote.replace(/^"|"$/g, '')}
+                    <span className="text-primary/40 text-lg leading-none ml-1">"</span>
+                  </p>
                   <Button
                     variant="ghost"
                     size="icon-sm"

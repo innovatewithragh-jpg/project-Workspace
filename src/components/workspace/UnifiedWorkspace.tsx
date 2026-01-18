@@ -123,7 +123,7 @@ export function UnifiedWorkspace() {
       {/* Left rail */}
       <aside className="w-56 border-r border-border bg-surface flex flex-col">
         {/* Header section - aligns with main content header */}
-        <div className="h-12 border-b border-border flex items-center px-4">
+        <div className="h-12 flex items-center px-4">
           {isProjectSelected ? (
             <Button
               variant="ghost"

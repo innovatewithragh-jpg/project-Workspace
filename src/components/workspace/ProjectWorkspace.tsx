@@ -87,7 +87,7 @@ export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
 
   const navItems: { id: ViewType; icon: typeof LayoutGrid; label: string }[] = [
     { id: 'project', icon: Box, label: 'Project' },
-    { id: 'board', icon: LayoutGrid, label: 'Board' },
+    { id: 'board', icon: LayoutGrid, label: 'Task Board' },
     { id: 'list', icon: ListTodo, label: 'My Tasks' },
     { id: 'chat', icon: MessageSquare, label: 'Group Chat' },
     { id: 'files', icon: Folder, label: 'Files' },

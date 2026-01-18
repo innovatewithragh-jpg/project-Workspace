@@ -118,36 +118,12 @@ export function FilesSection() {
 
   return (
     <>
-      <div className="space-y-6">
-      {/* Upload Area */}
-      <Card
-        className={`border-2 border-dashed transition-colors ${
-          isDragging ? 'border-primary bg-primary/5' : 'border-border'
-        }`}
+      <div
+        className="space-y-3"
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
       >
-        <CardContent className="flex flex-col items-center justify-center py-10">
-          <Upload className="h-12 w-12 text-muted-foreground mb-4" />
-          <p className="text-lg font-medium mb-2">Drag & drop files here</p>
-          <p className="text-sm text-muted-foreground mb-4">or click to browse</p>
-          <Button variant="outline" asChild>
-            <label className="cursor-pointer">
-              Browse Files
-              <input
-                type="file"
-                multiple
-                className="hidden"
-                onChange={handleFileInput}
-              />
-            </label>
-          </Button>
-        </CardContent>
-      </Card>
-
-      {/* Files List */}
-      <div className="space-y-3">
         <h3 className="text-lg font-semibold">Uploaded Files</h3>
         {files.length === 0 ? (
           <p className="text-muted-foreground text-center py-8">No files uploaded yet</p>
@@ -186,8 +162,21 @@ export function FilesSection() {
             ))}
           </div>
         )}
+        
+        {/* Upload Button at the end */}
+        <Button variant="outline" size="sm" asChild className="gap-2">
+          <label className="cursor-pointer">
+            <Upload className="h-4 w-4" />
+            Upload File
+            <input
+              type="file"
+              multiple
+              className="hidden"
+              onChange={handleFileInput}
+            />
+          </label>
+        </Button>
       </div>
-    </div>
 
       {/* Delete Confirmation Dialog */}
       <AlertDialog open={!!fileToDelete} onOpenChange={(open) => !open && setFileToDelete(null)}>

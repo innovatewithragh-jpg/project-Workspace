@@ -1,4 +1,4 @@
-import { Calendar, Link as LinkIcon, Tag, Settings, MessageSquare, MoreVertical, Plus } from 'lucide-react';
+import { Calendar, Link as LinkIcon, Tag, Settings, MessageSquare, MoreVertical, Plus, ArrowUp, Pencil, Grid3X3, Clock } from 'lucide-react';
 import { Project } from '@/types';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -11,46 +11,92 @@ interface ProjectDetailsViewProps {
   project: Project;
 }
 
-const statusVariants: Record<string, 'planning' | 'active' | 'paused' | 'done'> = {
-  planning: 'planning',
-  active: 'active',
-  paused: 'paused',
-  done: 'done',
-};
-
-const statusLabels: Record<string, string> = {
-  planning: 'Planning',
-  active: 'Active',
-  paused: 'Paused',
-  done: 'Done',
-};
-
 export function ProjectDetailsView({ project }: ProjectDetailsViewProps) {
+  const upvotes = project.upvotes ?? 0;
+
   return (
     <div className="max-w-3xl mx-auto space-y-6">
-      {/* Header */}
-      <div className="mb-6">
-        <div className="flex items-center gap-3 mb-2">
-          <h1 className="text-2xl font-bold text-foreground">{project.title}</h1>
-          <Badge variant={statusVariants[project.status]}>
-            {statusLabels[project.status]}
-          </Badge>
+      {/* Hero Header */}
+      <Card className="overflow-hidden border-0 shadow-lg">
+        {/* Background Header with color */}
+        <div 
+          className="relative h-40"
+          style={{ backgroundColor: project.imageColor || 'hsl(210 80% 80%)' }}
+        >
+          {/* Created date badge */}
+          <div className="absolute top-4 right-4 text-sm font-medium" style={{ color: 'hsl(210 30% 30%)' }}>
+            Created on {format(project.createdAt, 'd MMM')}
+          </div>
         </div>
-        <div className="flex items-center gap-2 text-sm text-muted-foreground">
-          <Calendar className="h-4 w-4" />
-          <span>Created on {format(project.createdAt, 'MMMM d, yyyy')}</span>
-        </div>
-      </div>
 
-      {/* Description */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Description</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground">
+        {/* Image placeholder */}
+        <div className="relative px-6">
+          <div 
+            className="absolute -top-16 left-6 w-32 h-32 rounded-2xl flex items-center justify-center border-4 border-card shadow-xl"
+            style={{ backgroundColor: project.imageColor ? `${project.imageColor.replace('85%', '90%')}` : 'hsl(210 80% 90%)' }}
+          >
+            <Grid3X3 className="h-12 w-12" style={{ color: 'hsl(210 30% 50%)' }} />
+          </div>
+
+          {/* Upvote badge */}
+          <div className="absolute -top-5 left-40 flex items-center gap-1.5 bg-card border border-border rounded-full px-4 py-2 shadow-lg">
+            <ArrowUp className="h-5 w-5 text-primary" />
+            <span className="text-base font-semibold text-foreground">{upvotes}</span>
+          </div>
+
+          {/* Edit button */}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="absolute -top-5 right-0 bg-card border border-border shadow-lg hover:bg-surface-hover"
+          >
+            <Pencil className="h-4 w-4" />
+          </Button>
+        </div>
+
+        {/* Project Info */}
+        <CardContent className="pt-20 pb-6 px-6">
+          <div className="flex items-start gap-3 mb-4">
+            <h1 className="text-2xl font-bold text-foreground">{project.title}</h1>
+            {project.projectUrl && (
+              <a
+                href={`https://${project.projectUrl}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <LinkIcon className="h-4 w-4" />
+                {project.projectUrl}
+              </a>
+            )}
+          </div>
+
+          <p className="text-muted-foreground mb-6 leading-relaxed">
             {project.description || 'No description provided.'}
           </p>
+
+          {/* Tags */}
+          {project.tags.length > 0 && (
+            <div className="flex items-center gap-2">
+              <Tag className="h-4 w-4 text-muted-foreground" />
+              <div className="flex flex-wrap gap-2">
+                {project.tags.map((tag) => (
+                  <span key={tag} className="text-sm text-muted-foreground">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Duration */}
+          {project.duration && (
+            <div className="flex items-center gap-2 mt-4 text-sm text-muted-foreground">
+              <Clock className="h-4 w-4" />
+              <span>Duration: {project.duration}</span>
+            </div>
+          )}
         </CardContent>
       </Card>
 
@@ -80,29 +126,6 @@ export function ProjectDetailsView({ project }: ProjectDetailsViewProps) {
             </div>
           ) : (
             <p className="text-muted-foreground">No links added yet.</p>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Tags */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2">
-            <Tag className="h-4 w-4" />
-            Tags
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {project.tags.length > 0 ? (
-            <div className="flex flex-wrap gap-2">
-              {project.tags.map((tag) => (
-                <Badge key={tag} variant="secondary">
-                  {tag}
-                </Badge>
-              ))}
-            </div>
-          ) : (
-            <p className="text-muted-foreground">No tags added.</p>
           )}
         </CardContent>
       </Card>

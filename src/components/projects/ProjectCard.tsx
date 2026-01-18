@@ -1,9 +1,6 @@
-import { Calendar, MoreHorizontal, Pin, Pencil, Trash2 } from 'lucide-react';
+import { ArrowUp, MoreHorizontal, Pin, Pencil, Trash2, Grid3X3 } from 'lucide-react';
 import { Project } from '@/types';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,6 +9,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { cn } from '@/lib/utils';
+import { format } from 'date-fns';
 
 interface ProjectCardProps {
   project: Project;
@@ -21,20 +19,6 @@ interface ProjectCardProps {
   onDelete?: () => void;
 }
 
-const statusVariants: Record<Project['status'], 'planning' | 'active' | 'paused' | 'done'> = {
-  planning: 'planning',
-  active: 'active',
-  paused: 'paused',
-  done: 'done',
-};
-
-const statusLabels: Record<Project['status'], string> = {
-  planning: 'Planning',
-  active: 'Active',
-  paused: 'Paused',
-  done: 'Done',
-};
-
 export function ProjectCard({
   project,
   onClick,
@@ -42,44 +26,49 @@ export function ProjectCard({
   onEdit,
   onDelete,
 }: ProjectCardProps) {
-  
-  const progressPercent = project.tasksTotal > 0 
-    ? Math.round((project.tasksCompleted / project.tasksTotal) * 100) 
-    : 0;
+  const upvotes = project.upvotes ?? 0;
 
   return (
     <div
       className={cn(
-        "group relative rounded-2xl border border-border/50 bg-card/80 backdrop-blur-sm p-5 cursor-pointer",
+        "group relative rounded-2xl border border-border/50 bg-card overflow-hidden cursor-pointer",
         "transition-all duration-300 ease-out",
-        "hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-1",
-        "hover:bg-card"
+        "hover:border-primary/30 hover:shadow-2xl hover:shadow-primary/10 hover:-translate-y-1"
       )}
       onClick={onClick}
     >
       {/* Pin indicator */}
       {project.isPinned && (
-        <div className="absolute -top-1.5 -right-1.5">
+        <div className="absolute top-3 left-3 z-10">
           <div className="h-6 w-6 rounded-full bg-gradient-to-br from-warning to-warning/70 flex items-center justify-center shadow-lg shadow-warning/30">
             <Pin className="h-3.5 w-3.5 text-warning-foreground fill-current" />
           </div>
         </div>
       )}
 
-      {/* Header */}
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex-1 min-w-0">
-          <h3 className="font-semibold text-foreground truncate mb-1.5 text-base">{project.title}</h3>
-          {project.description && (
-            <p className="text-sm text-muted-foreground truncate">{project.description}</p>
-          )}
+      {/* Image Section */}
+      <div 
+        className="relative h-32 flex items-center justify-center"
+        style={{ backgroundColor: project.imageColor || 'hsl(210 80% 90%)' }}
+      >
+        {/* Placeholder icon */}
+        <div className="w-16 h-16 rounded-xl bg-card/30 backdrop-blur-sm flex items-center justify-center border border-card/20">
+          <Grid3X3 className="h-8 w-8 text-card/80" />
         </div>
+
+        {/* Upvote badge */}
+        <div className="absolute bottom-0 right-4 translate-y-1/2 flex items-center gap-1.5 bg-card border border-border rounded-full px-3 py-1.5 shadow-lg">
+          <ArrowUp className="h-4 w-4 text-primary" />
+          <span className="text-sm font-medium text-foreground">{upvotes}</span>
+        </div>
+
+        {/* Dropdown menu */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
               size="icon-sm"
-              className="opacity-0 group-hover:opacity-100 transition-all duration-200 ml-2 hover:bg-surface-hover"
+              className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-200 bg-card/50 backdrop-blur-sm hover:bg-card/80"
               onClick={(e) => {
                 e.stopPropagation();
               }}
@@ -105,42 +94,38 @@ export function ProjectCard({
         </DropdownMenu>
       </div>
 
-      {/* Status & Due date */}
-      <div className="flex items-center gap-2.5 mb-4">
-        <Badge variant={statusVariants[project.status]} className="shadow-sm">
-          {statusLabels[project.status]}
-        </Badge>
-        {project.dueDate && (
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground bg-surface-hover/50 px-2 py-1 rounded-md">
-            <Calendar className="h-3 w-3" />
-            <span>{project.dueDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
-          </div>
+      {/* Content */}
+      <div className="p-4 pt-6">
+        {/* Title */}
+        <h3 className="font-semibold text-foreground text-base mb-2">{project.title}</h3>
+        
+        {/* Description */}
+        {project.description && (
+          <p className="text-sm text-muted-foreground line-clamp-3 mb-4">
+            {project.description}
+          </p>
         )}
-      </div>
 
-
-      {/* Footer */}
-      <div className="flex items-center justify-between pt-3 border-t border-border/50">
-        {/* Avatars */}
-        <div className="flex items-center">
-          <div className="flex -space-x-2">
-            {project.members.slice(0, 3).map((member) => (
-              <Avatar key={member.id} className="h-7 w-7 border-2 border-card ring-2 ring-background/50">
-                <AvatarImage src={member.avatar} alt={member.name} />
-                <AvatarFallback className="text-xs bg-primary/10 text-primary">{member.name.charAt(0)}</AvatarFallback>
-              </Avatar>
-            ))}
+        {/* Metadata */}
+        <div className="grid grid-cols-3 gap-2 text-xs">
+          <div>
+            <p className="text-muted-foreground mb-0.5">Created</p>
+            <p className="font-medium text-foreground">
+              {format(project.createdAt, 'M/d/yy')}
+            </p>
           </div>
-          {project.members.length > 3 && (
-            <div className="ml-1 h-7 w-7 rounded-full border-2 border-card ring-2 ring-background/50 bg-muted flex items-center justify-center">
-              <span className="text-xs font-medium text-muted-foreground">{project.members.length - 3}+</span>
-            </div>
-          )}
-        </div>
-
-        {/* Active Members */}
-        <div className="text-xs text-muted-foreground">
-          {project.members.length} active
+          <div>
+            <p className="text-muted-foreground mb-0.5">Category</p>
+            <p className="font-medium text-foreground">
+              {project.category || project.tags[0] || 'General'}
+            </p>
+          </div>
+          <div>
+            <p className="text-muted-foreground mb-0.5">Phase</p>
+            <p className="font-medium text-foreground">
+              {project.phase || 'MVP'}
+            </p>
+          </div>
         </div>
       </div>
     </div>

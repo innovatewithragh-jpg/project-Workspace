@@ -145,7 +145,7 @@ export function UnifiedWorkspace() {
           ) : (
             <div className="py-2 px-3">
               <h2 className="font-semibold text-foreground">My Workspace</h2>
-              <p className="text-xs text-muted-foreground mt-1">Select a project to start</p>
+              <p className="text-xs text-muted-foreground mt-1">Let's build something great ✨</p>
             </div>
           )}
         </div>

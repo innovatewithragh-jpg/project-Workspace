@@ -308,7 +308,7 @@ export function UnifiedWorkspace() {
               <Users className="h-4 w-4" />
             </Button>
           </div>
-          <div className="space-y-2">
+          <div className="space-y-3">
             {isProjectSelected ? (
               // Show real team members when project is selected
               <>
@@ -333,17 +333,16 @@ export function UnifiedWorkspace() {
                 )}
               </>
             ) : (
-              // Show grey dummy profiles when no project is selected
-              dummyTeamMembers.map((member) => (
-                <div key={member.id} className="flex items-center gap-2">
-                  <Avatar className="h-7 w-7 bg-muted">
-                    <AvatarFallback className="text-xs bg-muted text-muted-foreground/50">
-                      <User className="h-4 w-4" />
-                    </AvatarFallback>
-                  </Avatar>
-                  <span className="text-sm text-muted-foreground/50">{member.name}</span>
-                </div>
-              ))
+              // Show motivational message and find teammates button
+              <div className="text-center py-2">
+                <p className="text-xs text-muted-foreground mb-3">
+                  Great things are built together
+                </p>
+                <Button variant="outline" size="sm" className="w-full gap-2">
+                  <Users className="h-4 w-4" />
+                  Find Teammates
+                </Button>
+              </div>
             )}
           </div>
         </div>

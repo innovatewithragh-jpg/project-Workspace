@@ -147,7 +147,7 @@ export function ProjectCard({
             <Button
               variant="ghost"
               size="icon-sm"
-              className="absolute bottom-2 left-3 opacity-0 group-hover:opacity-100 transition-all duration-200 bg-card/50 backdrop-blur-sm hover:bg-card/80"
+              className="absolute top-2 right-14 z-20 opacity-0 group-hover:opacity-100 transition-all duration-200 bg-card/50 backdrop-blur-sm hover:bg-card/80"
               onClick={(e) => {
                 e.stopPropagation();
               }}

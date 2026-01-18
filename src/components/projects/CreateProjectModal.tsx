@@ -171,42 +171,42 @@ export function CreateProjectModal({ open, onOpenChange, onCreateProject }: Crea
           </Button>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8 p-6">
-          {/* Left Column - Image & Colors */}
-          <div className="space-y-6">
-            {/* Image Upload Area */}
-            <div 
-              className="aspect-square max-w-[280px] mx-auto rounded-2xl flex flex-col items-center justify-center border-2 border-dashed border-border cursor-pointer hover:border-primary/50 transition-colors"
-              style={{ backgroundColor: formData.imageColor }}
-            >
-              <div className="w-20 h-20 rounded-xl bg-card/30 backdrop-blur-sm flex items-center justify-center border border-card/20 mb-4">
-                <Grid3X3 className="h-10 w-10 text-card/80" />
+        <div className="p-6">
+          {step === 1 && (
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Left Column - Image & Colors */}
+              <div className="space-y-6">
+                {/* Image Upload Area */}
+                <div 
+                  className="aspect-square max-w-[280px] mx-auto rounded-2xl flex flex-col items-center justify-center border-2 border-dashed border-border cursor-pointer hover:border-primary/50 transition-colors"
+                  style={{ backgroundColor: formData.imageColor }}
+                >
+                  <div className="w-20 h-20 rounded-xl bg-card/30 backdrop-blur-sm flex items-center justify-center border border-card/20 mb-4">
+                    <Grid3X3 className="h-10 w-10 text-card/80" />
+                  </div>
+                  <span className="text-primary font-medium">Upload Image</span>
+                </div>
+
+                {/* Color Selection */}
+                <div className="flex justify-center gap-3">
+                  {COLOR_OPTIONS.map((color) => (
+                    <button
+                      key={color.value}
+                      className={cn(
+                        "w-10 h-10 rounded-full transition-all",
+                        formData.imageColor === color.value 
+                          ? "ring-2 ring-primary ring-offset-2 ring-offset-background" 
+                          : "hover:scale-110"
+                      )}
+                      style={{ backgroundColor: color.value }}
+                      onClick={() => setFormData(prev => ({ ...prev, imageColor: color.value }))}
+                    />
+                  ))}
+                </div>
               </div>
-              <span className="text-primary font-medium">Upload Image</span>
-            </div>
 
-            {/* Color Selection */}
-            <div className="flex justify-center gap-3">
-              {COLOR_OPTIONS.map((color) => (
-                <button
-                  key={color.value}
-                  className={cn(
-                    "w-10 h-10 rounded-full transition-all",
-                    formData.imageColor === color.value 
-                      ? "ring-2 ring-primary ring-offset-2 ring-offset-background" 
-                      : "hover:scale-110"
-                  )}
-                  style={{ backgroundColor: color.value }}
-                  onClick={() => setFormData(prev => ({ ...prev, imageColor: color.value }))}
-                />
-              ))}
-            </div>
-          </div>
-
-          {/* Right Column - Form */}
-          <div className="space-y-5">
-            {step === 1 ? (
-              <>
+              {/* Right Column - Form Step 1 */}
+              <div className="space-y-5">
                 {/* Categories */}
                 <div>
                   <div className="flex items-center justify-between mb-2">
@@ -275,170 +275,172 @@ export function CreateProjectModal({ open, onOpenChange, onCreateProject }: Crea
                     rows={5}
                   />
                 </div>
-              </>
-            ) : (
-              <>
-                {/* Team Size & Duration */}
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label className="mb-2 block">Team Size</Label>
-                    <Select 
-                      value={formData.teamSize.toString()} 
-                      onValueChange={(v) => setFormData(prev => ({ ...prev, teamSize: parseInt(v) || 2 }))}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {TEAM_SIZES.map((size) => (
-                          <SelectItem key={size} value={size}>{size}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label className="mb-2 block">Duration</Label>
-                    <Select 
-                      value={formData.duration} 
-                      onValueChange={(v) => setFormData(prev => ({ ...prev, duration: v }))}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {DURATIONS.map((d) => (
-                          <SelectItem key={d} value={d}>{d}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
+              </div>
+            </div>
+          )}
+
+          {step === 2 && (
+            <div className="space-y-6">
+              {/* Team Size & Duration */}
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <Label className="mb-2 block">Team Size</Label>
+                  <Select 
+                    value={formData.teamSize.toString()} 
+                    onValueChange={(v) => setFormData(prev => ({ ...prev, teamSize: parseInt(v) || 2 }))}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {TEAM_SIZES.map((size) => (
+                        <SelectItem key={size} value={size}>{size}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <div>
+                  <Label className="mb-2 block">Duration</Label>
+                  <Select 
+                    value={formData.duration} 
+                    onValueChange={(v) => setFormData(prev => ({ ...prev, duration: v }))}
+                  >
+                    <SelectTrigger>
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {DURATIONS.map((d) => (
+                        <SelectItem key={d} value={d}>{d}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
+
+              {/* Project Roles Section */}
+              <div>
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-lg font-semibold">Project Roles</h3>
+                  <span className="text-sm text-muted-foreground">Max 6 roles</span>
                 </div>
 
-                {/* Project Roles Section */}
-                <div>
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold">Project Roles</h3>
-                    <span className="text-sm text-muted-foreground">Max 6 roles</span>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-4">
-                    {/* Current Role Form */}
-                    <div className="p-4 border border-border rounded-xl space-y-4">
-                      <div className="flex items-center gap-3">
-                        <div className="h-10 w-10 rounded-full bg-primary flex items-center justify-center">
-                          <Settings className="h-5 w-5 text-primary-foreground" />
-                        </div>
-                        <Select 
-                          value={currentRole.title} 
-                          onValueChange={(v) => setCurrentRole(prev => ({ ...prev, title: v }))}
-                        >
-                          <SelectTrigger className="flex-1">
-                            <SelectValue />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {AVAILABLE_ROLES.map((role) => (
-                              <SelectItem key={role} value={role}>{role}</SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                <div className="grid md:grid-cols-2 gap-4">
+                  {/* Current Role Form */}
+                  <div className="p-4 border border-border rounded-xl space-y-4">
+                    <div className="flex items-center gap-3">
+                      <div className="h-10 w-10 rounded-full bg-primary flex items-center justify-center">
+                        <Settings className="h-5 w-5 text-primary-foreground" />
                       </div>
-
-                      <p className="text-xs text-muted-foreground">
-                        Your role on this project (you will be auto-assigned).
-                      </p>
-
-                      {/* Access Type */}
-                      <RadioGroup 
-                        value={currentRole.accessType} 
-                        onValueChange={(v: 'open' | 'invite') => setCurrentRole(prev => ({ ...prev, accessType: v }))}
-                        className="flex gap-4"
+                      <Select 
+                        value={currentRole.title} 
+                        onValueChange={(v) => setCurrentRole(prev => ({ ...prev, title: v }))}
                       >
-                        <div className="flex items-center gap-2">
-                          <RadioGroupItem value="open" id="open" />
-                          <Label htmlFor="open" className="cursor-pointer">Open</Label>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <RadioGroupItem value="invite" id="invite" />
-                          <Label htmlFor="invite" className="cursor-pointer">Invite Only</Label>
-                        </div>
-                      </RadioGroup>
-
-                      {/* Assign to me */}
-                      <div className="flex items-center gap-2">
-                        <Checkbox 
-                          id="assignToMe" 
-                          checked={currentRole.assignToMe}
-                          onCheckedChange={(checked) => setCurrentRole(prev => ({ ...prev, assignToMe: !!checked }))}
-                        />
-                        <Label htmlFor="assignToMe" className="cursor-pointer text-sm">
-                          Assign this role to me (admin)
-                        </Label>
-                      </div>
-
-                      {/* Skills */}
-                      <div>
-                        <Label className="mb-2 block">Skills</Label>
-                        <div className="flex flex-wrap gap-2 mb-2">
-                          {currentRole.skills.map((skill) => (
-                            <Badge key={skill} variant="secondary" className="gap-1 pr-1">
-                              {skill}
-                              <button onClick={() => handleRemoveSkill(skill)} className="ml-1 hover:text-destructive">
-                                <X className="h-3 w-3" />
-                              </button>
-                            </Badge>
+                        <SelectTrigger className="flex-1">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {AVAILABLE_ROLES.map((role) => (
+                            <SelectItem key={role} value={role}>{role}</SelectItem>
                           ))}
-                        </div>
-                        <Select onValueChange={handleAddSkill}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Type or select skill..." />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {AVAILABLE_SKILLS.filter(s => !currentRole.skills.includes(s)).map((skill) => (
-                              <SelectItem key={skill} value={skill}>{skill}</SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      </div>
+                        </SelectContent>
+                      </Select>
                     </div>
 
-                    {/* Add Role Card */}
-                    <button
-                      onClick={handleAddRole}
-                      disabled={formData.roles.length >= 6}
-                      className="p-4 border-2 border-dashed border-border rounded-xl flex flex-col items-center justify-center min-h-[200px] hover:border-primary/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <Plus className="h-8 w-8 text-primary mb-2" />
-                      <span className="text-primary font-medium">Add role</span>
-                      <span className="text-xs text-muted-foreground mt-1">({formData.roles.length}/6)</span>
-                    </button>
-                  </div>
+                    <p className="text-xs text-muted-foreground">
+                      Your role on this project (you will be auto-assigned).
+                    </p>
 
-                  {/* Added Roles */}
-                  {formData.roles.length > 0 && (
-                    <div className="mt-4 space-y-2">
-                      <Label>Added Roles:</Label>
-                      <div className="flex flex-wrap gap-2">
-                        {formData.roles.map((role) => (
-                          <Badge key={role.id} variant="outline" className="gap-2">
-                            {role.title}
-                            <button 
-                              onClick={() => setFormData(prev => ({ 
-                                ...prev, 
-                                roles: prev.roles.filter(r => r.id !== role.id) 
-                              }))}
-                              className="hover:text-destructive"
-                            >
+                    {/* Access Type */}
+                    <RadioGroup 
+                      value={currentRole.accessType} 
+                      onValueChange={(v: 'open' | 'invite') => setCurrentRole(prev => ({ ...prev, accessType: v }))}
+                      className="flex gap-4"
+                    >
+                      <div className="flex items-center gap-2">
+                        <RadioGroupItem value="open" id="open" />
+                        <Label htmlFor="open" className="cursor-pointer">Open</Label>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <RadioGroupItem value="invite" id="invite" />
+                        <Label htmlFor="invite" className="cursor-pointer">Invite Only</Label>
+                      </div>
+                    </RadioGroup>
+
+                    {/* Assign to me */}
+                    <div className="flex items-center gap-2">
+                      <Checkbox 
+                        id="assignToMe" 
+                        checked={currentRole.assignToMe}
+                        onCheckedChange={(checked) => setCurrentRole(prev => ({ ...prev, assignToMe: !!checked }))}
+                      />
+                      <Label htmlFor="assignToMe" className="cursor-pointer text-sm">
+                        Assign this role to me (admin)
+                      </Label>
+                    </div>
+
+                    {/* Skills */}
+                    <div>
+                      <Label className="mb-2 block">Skills</Label>
+                      <div className="flex flex-wrap gap-2 mb-2">
+                        {currentRole.skills.map((skill) => (
+                          <Badge key={skill} variant="secondary" className="gap-1 pr-1">
+                            {skill}
+                            <button onClick={() => handleRemoveSkill(skill)} className="ml-1 hover:text-destructive">
                               <X className="h-3 w-3" />
                             </button>
                           </Badge>
                         ))}
                       </div>
+                      <Select onValueChange={handleAddSkill}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Type or select skill..." />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {AVAILABLE_SKILLS.filter(s => !currentRole.skills.includes(s)).map((skill) => (
+                            <SelectItem key={skill} value={skill}>{skill}</SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
-                  )}
+                  </div>
+
+                  {/* Add Role Card */}
+                  <button
+                    onClick={handleAddRole}
+                    disabled={formData.roles.length >= 6}
+                    className="p-4 border-2 border-dashed border-border rounded-xl flex flex-col items-center justify-center min-h-[200px] hover:border-primary/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <Plus className="h-8 w-8 text-primary mb-2" />
+                    <span className="text-primary font-medium">Add role</span>
+                    <span className="text-xs text-muted-foreground mt-1">({formData.roles.length}/6)</span>
+                  </button>
                 </div>
-              </>
-            )}
-          </div>
+
+                {/* Added Roles */}
+                {formData.roles.length > 0 && (
+                  <div className="mt-4 space-y-2">
+                    <Label>Added Roles:</Label>
+                    <div className="flex flex-wrap gap-2">
+                      {formData.roles.map((role) => (
+                        <Badge key={role.id} variant="outline" className="gap-2">
+                          {role.title}
+                          <button 
+                            onClick={() => setFormData(prev => ({ 
+                              ...prev, 
+                              roles: prev.roles.filter(r => r.id !== role.id) 
+                            }))}
+                            className="hover:text-destructive"
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
+                        </Badge>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Footer */}

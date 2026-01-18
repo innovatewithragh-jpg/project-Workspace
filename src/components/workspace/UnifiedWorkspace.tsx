@@ -122,32 +122,36 @@ export function UnifiedWorkspace() {
     <div className="flex flex-1 overflow-hidden animate-fade-in">
       {/* Left rail */}
       <aside className="w-56 border-r border-border bg-surface flex flex-col">
-        {/* Back button & project info */}
-        <div className="py-4 px-2 border-b border-border">
+        {/* Header section - aligns with main content header */}
+        <div className="h-12 border-b border-border flex items-center px-4">
+          {isProjectSelected ? (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="gap-2 -ml-2"
+              onClick={handleBackToProjects}
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back
+            </Button>
+          ) : (
+            <h3 className="font-medium text-foreground">My Workspace</h3>
+          )}
+        </div>
+
+        {/* Project info or quote */}
+        <div className="py-3 px-4 border-b border-border">
           {isProjectSelected ? (
             <>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="gap-2 mb-3"
-                onClick={handleBackToProjects}
-              >
-                <ArrowLeft className="h-4 w-4" />
-                Back
-              </Button>
-              <h2 className="font-semibold text-foreground truncate px-3">
+              <h2 className="font-semibold text-foreground truncate">
                 {selectedProject.title}
               </h2>
-              <Badge variant={statusVariants[selectedProject.status]} className="mt-2 ml-3">
+              <Badge variant={statusVariants[selectedProject.status]} className="mt-2">
                 {statusLabels[selectedProject.status]}
               </Badge>
             </>
           ) : (
-            <>
-              <div className="h-9 mb-3" /> {/* Spacer matching Back button height */}
-              <h2 className="font-semibold text-foreground px-3">My Workspace</h2>
-              <p className="text-xs text-muted-foreground mt-2 ml-3 italic">"The only way to do great work is to love what you do."</p>
-            </>
+            <p className="text-xs text-muted-foreground italic">"The only way to do great work is to love what you do."</p>
           )}
         </div>
 

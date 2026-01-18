@@ -336,7 +336,7 @@ export function UnifiedWorkspace() {
               // Show motivational message and find teammates button
               <div className="text-center py-2">
                 <p className="text-xs text-muted-foreground mb-3">
-                  Great things are built together
+                  Find the Right People. Build Together.
                 </p>
                 <Button variant="outline" size="sm" className="w-full gap-2">
                   <Users className="h-4 w-4" />

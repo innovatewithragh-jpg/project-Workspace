@@ -95,7 +95,7 @@ export function ProjectWorkspace({ project, onBack }: ProjectWorkspaceProps) {
   ];
 
   return (
-    <div className="flex h-[calc(100vh-3.5rem)] animate-fade-in">
+    <div className="flex flex-1 overflow-hidden animate-fade-in">
       {/* Left rail */}
       <aside className="w-56 border-r border-border bg-surface flex flex-col">
         {/* Back button & project info */}

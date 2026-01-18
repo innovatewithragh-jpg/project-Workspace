@@ -123,13 +123,13 @@ export function UnifiedWorkspace() {
       {/* Left rail */}
       <aside className="w-56 border-r border-border bg-surface flex flex-col">
         {/* Back button & project info */}
-        <div className="p-4 border-b border-border">
+        <div className="py-4 px-2 border-b border-border">
           {isProjectSelected ? (
             <>
               <Button
                 variant="ghost"
                 size="sm"
-                className="gap-2 mb-3 -ml-2"
+                className="gap-2 mb-3"
                 onClick={handleBackToProjects}
               >
                 <ArrowLeft className="h-4 w-4" />
@@ -143,7 +143,7 @@ export function UnifiedWorkspace() {
               </Badge>
             </>
           ) : (
-            <div className="py-2 px-3">
+            <div className="px-3 py-2">
               <h2 className="font-semibold text-foreground">My Workspace</h2>
               <p className="text-xs text-muted-foreground mt-1">Let's build something great ✨</p>
             </div>

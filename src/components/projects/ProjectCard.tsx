@@ -1,4 +1,5 @@
-import { ArrowUp, MoreHorizontal, Pin, Pencil, Trash2, Grid3X3 } from 'lucide-react';
+import { useState } from 'react';
+import { ArrowUp, MoreHorizontal, Pin, Pencil, Trash2, Layers, Palette, Briefcase, Code } from 'lucide-react';
 import { Project } from '@/types';
 import { Button } from '@/components/ui/button';
 import {
@@ -8,6 +9,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 
@@ -19,6 +21,31 @@ interface ProjectCardProps {
   onDelete?: () => void;
 }
 
+// Different project icons based on category
+const getProjectIcon = (category?: string) => {
+  switch (category?.toLowerCase()) {
+    case 'ai/ml':
+    case 'saas':
+      return Code;
+    case 'ux':
+    case 'marketing':
+      return Palette;
+    case 'fintech':
+    case 'e-commerce':
+      return Briefcase;
+    default:
+      return Layers;
+  }
+};
+
+// Sample member avatars for display
+const SAMPLE_AVATARS = [
+  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop',
+  'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop',
+  'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100&h=100&fit=crop',
+  'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=100&h=100&fit=crop',
+];
+
 export function ProjectCard({
   project,
   onClick,
@@ -26,7 +53,21 @@ export function ProjectCard({
   onEdit,
   onDelete,
 }: ProjectCardProps) {
-  const upvotes = project.upvotes ?? 0;
+  const [upvotes, setUpvotes] = useState(project.upvotes ?? 0);
+  const [hasUpvoted, setHasUpvoted] = useState(false);
+
+  const handleUpvote = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (hasUpvoted) {
+      setUpvotes(prev => prev - 1);
+      setHasUpvoted(false);
+    } else {
+      setUpvotes(prev => prev + 1);
+      setHasUpvoted(true);
+    }
+  };
+
+  const ProjectIcon = getProjectIcon(project.category || project.tags[0]);
 
   return (
     <div
@@ -37,30 +78,68 @@ export function ProjectCard({
       )}
       onClick={onClick}
     >
-      {/* Pin indicator */}
-      {project.isPinned && (
-        <div className="absolute top-3 left-3 z-10">
-          <div className="h-6 w-6 rounded-full bg-gradient-to-br from-warning to-warning/70 flex items-center justify-center shadow-lg shadow-warning/30">
-            <Pin className="h-3.5 w-3.5 text-warning-foreground fill-current" />
-          </div>
-        </div>
-      )}
-
       {/* Image Section */}
       <div 
         className="relative h-32 flex items-center justify-center"
-        style={{ backgroundColor: project.imageColor || 'hsl(210 80% 90%)' }}
+        style={{ backgroundColor: project.imageColor || 'hsl(340 70% 85%)' }}
       >
-        {/* Placeholder icon */}
-        <div className="w-16 h-16 rounded-xl bg-card/30 backdrop-blur-sm flex items-center justify-center border border-card/20">
-          <Grid3X3 className="h-8 w-8 text-card/80" />
+        {/* Project Icon - Left Upper Corner */}
+        <div className="absolute top-3 left-3 z-10">
+          <div 
+            className="h-16 w-16 rounded-xl bg-card/30 backdrop-blur-sm flex items-center justify-center border border-card/20 shadow-lg"
+          >
+            <ProjectIcon className="h-8 w-8 text-card/90" />
+          </div>
         </div>
 
-        {/* Upvote badge */}
-        <div className="absolute bottom-0 right-4 translate-y-1/2 flex items-center gap-1.5 bg-card border border-border rounded-full px-3 py-1.5 shadow-lg">
-          <ArrowUp className="h-4 w-4 text-primary" />
-          <span className="text-sm font-medium text-foreground">{upvotes}</span>
+        {/* Pin indicator */}
+        {project.isPinned && (
+          <div className="absolute top-3 left-20 z-10">
+            <div className="h-6 w-6 rounded-full bg-gradient-to-br from-warning to-warning/70 flex items-center justify-center shadow-lg shadow-warning/30">
+              <Pin className="h-3.5 w-3.5 text-warning-foreground fill-current" />
+            </div>
+          </div>
+        )}
+
+        {/* Team Member Avatars - Right Upper Corner */}
+        <div className="absolute top-3 right-3 z-10 flex -space-x-2">
+          {project.members.slice(0, 3).map((member, index) => (
+            <Avatar key={member.id} className="h-8 w-8 border-2 border-card/50 shadow-md">
+              <AvatarImage src={member.avatar || SAMPLE_AVATARS[index % SAMPLE_AVATARS.length]} />
+              <AvatarFallback className="text-xs bg-primary/20">{member.name.charAt(0)}</AvatarFallback>
+            </Avatar>
+          ))}
+          {project.members.length > 3 && (
+            <div className="h-8 w-8 rounded-full bg-primary/80 border-2 border-card/50 flex items-center justify-center shadow-md">
+              <span className="text-xs font-medium text-primary-foreground">+{project.members.length - 3}</span>
+            </div>
+          )}
         </div>
+
+        {/* Upvote badge - Enhanced */}
+        <button
+          onClick={handleUpvote}
+          className={cn(
+            "absolute bottom-0 right-4 translate-y-1/2 flex items-center gap-1.5 bg-card border rounded-full px-3 py-1.5 shadow-lg transition-all duration-200 hover:scale-105",
+            hasUpvoted 
+              ? "border-primary/50 bg-primary/5" 
+              : "border-border hover:border-primary/30"
+          )}
+        >
+          <div className={cn(
+            "h-6 w-6 rounded-full flex items-center justify-center transition-colors",
+            hasUpvoted ? "bg-primary/10" : "bg-muted/50"
+          )}>
+            <ArrowUp className={cn(
+              "h-4 w-4 transition-colors",
+              hasUpvoted ? "text-primary" : "text-muted-foreground"
+            )} />
+          </div>
+          <span className={cn(
+            "text-sm font-medium transition-colors",
+            hasUpvoted ? "text-primary" : "text-foreground"
+          )}>{upvotes}</span>
+        </button>
 
         {/* Dropdown menu */}
         <DropdownMenu>
@@ -68,7 +147,7 @@ export function ProjectCard({
             <Button
               variant="ghost"
               size="icon-sm"
-              className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-200 bg-card/50 backdrop-blur-sm hover:bg-card/80"
+              className="absolute bottom-2 left-3 opacity-0 group-hover:opacity-100 transition-all duration-200 bg-card/50 backdrop-blur-sm hover:bg-card/80"
               onClick={(e) => {
                 e.stopPropagation();
               }}
@@ -76,7 +155,7 @@ export function ProjectCard({
               <MoreHorizontal className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48 bg-popover z-50" onClick={(e) => e.stopPropagation()}>
+          <DropdownMenuContent align="start" className="w-48 bg-popover z-50" onClick={(e) => e.stopPropagation()}>
             <DropdownMenuItem onClick={() => onTogglePin?.()}>
               <Pin className="h-4 w-4 mr-2" />
               {project.isPinned ? 'Unpin project' : 'Pin project'}

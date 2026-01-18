@@ -353,8 +353,8 @@ export function UnifiedWorkspace() {
 
       {/* Main content */}
       <main className="flex-1 flex flex-col overflow-hidden">
-        {/* Header with breadcrumb */}
-        <header className="h-12 border-b border-border flex items-center justify-between px-4">
+        {/* Header with breadcrumb - increased height and centered content */}
+        <header className="h-16 border-b border-border flex items-center justify-between px-4">
           <nav className="flex items-center gap-2 text-sm">
             <span className="text-muted-foreground">My Workspace</span>
             <span className="text-muted-foreground">/</span>

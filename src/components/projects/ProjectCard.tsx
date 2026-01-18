@@ -1,4 +1,4 @@
-import { Calendar, MoreHorizontal, Star, Pencil, Trash2 } from 'lucide-react';
+import { Calendar, MoreHorizontal, Pin, Pencil, Trash2 } from 'lucide-react';
 import { Project } from '@/types';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -61,7 +61,7 @@ export function ProjectCard({
       {project.isPinned && (
         <div className="absolute -top-1.5 -right-1.5">
           <div className="h-6 w-6 rounded-full bg-gradient-to-br from-warning to-warning/70 flex items-center justify-center shadow-lg shadow-warning/30">
-            <Star className="h-3.5 w-3.5 text-warning-foreground fill-current" />
+            <Pin className="h-3.5 w-3.5 text-warning-foreground fill-current" />
           </div>
         </div>
       )}
@@ -89,7 +89,7 @@ export function ProjectCard({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-48 bg-popover z-50" onClick={(e) => e.stopPropagation()}>
             <DropdownMenuItem onClick={() => onTogglePin?.()}>
-              <Star className="h-4 w-4 mr-2" />
+              <Pin className="h-4 w-4 mr-2" />
               {project.isPinned ? 'Unpin project' : 'Pin project'}
             </DropdownMenuItem>
             <DropdownMenuItem onClick={() => onEdit?.()}>

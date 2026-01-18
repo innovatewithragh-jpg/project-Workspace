@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Filter, SortAsc, Grid, Star } from 'lucide-react';
+import { Filter, SortAsc, Grid, Pin } from 'lucide-react';
 import { Project, ProjectStatus } from '@/types';
 import { ProjectCard } from './ProjectCard';
 import { Button } from '@/components/ui/button';
@@ -93,7 +93,7 @@ export function ProjectGrid({ projects, onProjectClick }: ProjectGridProps) {
       {pinnedProjects.length > 0 && (
         <div>
           <div className="flex items-center gap-2 mb-4">
-            <Star className="h-4 w-4 text-warning" />
+            <Pin className="h-4 w-4 text-warning" />
             <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Pinned</h2>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">

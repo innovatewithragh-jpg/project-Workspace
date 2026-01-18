@@ -349,11 +349,13 @@ export function UnifiedWorkspace() {
 
       {/* Main content */}
       <main className="flex-1 flex flex-col overflow-hidden">
-        {/* Header */}
+        {/* Header with breadcrumb */}
         <header className="h-12 border-b border-border flex items-center px-4">
-          <h3 className="font-medium text-foreground">
-            {getHeaderTitle()}
-          </h3>
+          <nav className="flex items-center gap-2 text-sm">
+            <span className="text-muted-foreground">My Workspace</span>
+            <span className="text-muted-foreground">/</span>
+            <span className="font-medium text-foreground">{getHeaderTitle()}</span>
+          </nav>
         </header>
 
         {/* Content */}

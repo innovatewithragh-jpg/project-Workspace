@@ -84,11 +84,11 @@ export function ProjectCard({
         style={{ backgroundColor: project.imageColor || 'hsl(340 70% 85%)' }}
       >
         {/* Project Icon - Left Upper Corner */}
-        <div className="absolute top-3 left-3 z-10">
+        <div className="absolute top-[10px] left-3 z-10">
           <div 
-            className="h-16 w-16 rounded-xl bg-card/30 backdrop-blur-sm flex items-center justify-center border border-card/20 shadow-lg"
+            className="h-[108px] w-[108px] rounded-xl bg-card/30 backdrop-blur-sm flex items-center justify-center border border-card/20 shadow-lg"
           >
-            <ProjectIcon className="h-8 w-8 text-card/90" />
+            <ProjectIcon className="h-12 w-12 text-card/90" />
           </div>
         </div>
 

@@ -152,7 +152,7 @@ export function CreateProjectModal({ open, onOpenChange, onCreateProject }: Crea
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0">
+      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto p-0 [&>button]:hidden">
         {/* Header Background */}
         <div className="relative">
           <div 
@@ -164,7 +164,7 @@ export function CreateProjectModal({ open, onOpenChange, onCreateProject }: Crea
           <Button
             variant="ghost"
             size="icon"
-            className="absolute top-2 right-2 text-foreground/70 hover:text-foreground"
+            className="absolute top-2 right-2 text-foreground/70 hover:text-foreground bg-card/20 hover:bg-card/40"
             onClick={handleClose}
           >
             <X className="h-5 w-5" />

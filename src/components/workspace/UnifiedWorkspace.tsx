@@ -187,7 +187,7 @@ export function UnifiedWorkspace() {
         </div>
 
         {/* Project info or quote */}
-        <div className="py-3 px-4 border-b border-border">
+        <div className="px-4 pt-1 pb-3 border-b border-border">
           {isProjectSelected ? (
             <>
               <h2 className="font-semibold text-foreground truncate">
@@ -229,13 +229,15 @@ export function UnifiedWorkspace() {
                   </div>
                 </div>
               ) : (
-                <div className="flex items-start gap-2">
-                  <p className="text-xs text-muted-foreground italic flex-1">{quote}</p>
+                <div className="flex items-start gap-2 bg-primary/5 rounded-lg p-3 border-l-2 border-primary/30">
+                  <span className="text-primary/40 text-lg leading-none">"</span>
+                  <p className="text-xs text-muted-foreground italic flex-1 leading-relaxed">{quote.replace(/^"|"$/g, '')}</p>
+                  <span className="text-primary/40 text-lg leading-none self-end">"</span>
                   <Button
                     variant="ghost"
                     size="icon-sm"
                     onClick={handleStartEditQuote}
-                    className="h-5 w-5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0"
+                    className="h-5 w-5 opacity-0 group-hover:opacity-100 transition-opacity shrink-0 absolute top-1 right-1"
                   >
                     <Pencil className="h-3 w-3" />
                   </Button>

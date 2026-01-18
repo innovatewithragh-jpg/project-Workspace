@@ -1,28 +1,14 @@
-import { useNavigate } from 'react-router-dom';
-import { MainLayout } from '@/components/layout/MainLayout';
-import { ProjectGrid } from '@/components/projects/ProjectGrid';
-import { projects } from '@/data/mockData';
-import { Project } from '@/types';
+import { TopBar } from '@/components/layout/TopBar';
+import { UnifiedWorkspace } from '@/components/workspace/UnifiedWorkspace';
 
 const Index = () => {
-  const navigate = useNavigate();
-
-  const handleProjectClick = (project: Project) => {
-    navigate(`/project/${project.id}/workspace`);
-  };
-
   return (
-    <MainLayout>
-      <div className="p-6">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-foreground mb-2 tracking-tight">Projects</h1>
-          <p className="text-muted-foreground text-base">
-            Manage your team's projects and tasks in one place
-          </p>
-        </div>
-        <ProjectGrid projects={projects} onProjectClick={handleProjectClick} />
+    <div className="h-screen bg-card overflow-hidden">
+      <div className="max-w-7xl mx-auto border-x border-border h-screen flex flex-col overflow-hidden">
+        <TopBar />
+        <UnifiedWorkspace />
       </div>
-    </MainLayout>
+    </div>
   );
 };
 

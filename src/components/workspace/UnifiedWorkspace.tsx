@@ -1,0 +1,310 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {
+  ArrowLeft,
+  LayoutGrid,
+  ListTodo,
+  MessageSquare,
+  Folder,
+  Settings,
+  Users,
+  Box,
+  Home,
+} from 'lucide-react';
+import { Project, Task, TaskStatus } from '@/types';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { KanbanBoard } from '@/components/tasks/KanbanBoard';
+import { MyTasksList } from '@/components/tasks/MyTasksList';
+import { FilesSection } from '@/components/files/FilesSection';
+import { TaskModal } from '@/components/tasks/TaskModal';
+import { CreateTaskModal } from '@/components/tasks/CreateTaskModal';
+import { ProjectChat } from '@/components/chat/ProjectChat';
+import { ProjectDetailsView } from '@/components/projects/ProjectDetailsView';
+import { SettingsView } from '@/components/settings/SettingsView';
+import { ProjectGrid } from '@/components/projects/ProjectGrid';
+import { tasks as mockTasks, chatMessages, projects } from '@/data/mockData';
+import { cn } from '@/lib/utils';
+import { useToast } from '@/hooks/use-toast';
+
+type ViewType = 'projects' | 'project' | 'board' | 'list' | 'chat' | 'files' | 'settings';
+
+const statusLabels: Record<Project['status'], string> = {
+  planning: 'Planning',
+  active: 'Active',
+  paused: 'Paused',
+  done: 'Done',
+};
+
+const statusVariants: Record<Project['status'], 'planning' | 'active' | 'paused' | 'done'> = {
+  planning: 'planning',
+  active: 'active',
+  paused: 'paused',
+  done: 'done',
+};
+
+// Dummy team members for when no project is selected
+const dummyTeamMembers = [
+  { id: 'dummy1', name: 'Team Member', avatar: '' },
+  { id: 'dummy2', name: 'Team Member', avatar: '' },
+  { id: 'dummy3', name: 'Team Member', avatar: '' },
+];
+
+export function UnifiedWorkspace() {
+  const navigate = useNavigate();
+  const [activeView, setActiveView] = useState<ViewType>('projects');
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [isCreateTaskModalOpen, setIsCreateTaskModalOpen] = useState(false);
+  const [createTaskStatus, setCreateTaskStatus] = useState<TaskStatus>('todo');
+  const { toast } = useToast();
+
+  const projectTasks = selectedProject 
+    ? mockTasks.filter((t) => t.projectId === selectedProject.id)
+    : [];
+
+  const handleTaskClick = (task: Task) => {
+    setSelectedTask(task);
+    setIsTaskModalOpen(true);
+  };
+
+  const handleAddTask = (status: TaskStatus) => {
+    setCreateTaskStatus(status);
+    setIsCreateTaskModalOpen(true);
+  };
+
+  const handleCreateTask = (taskData: {
+    title: string;
+    description: string;
+    status: TaskStatus;
+    assignees: any[];
+    dueDate?: Date;
+    tags: string[];
+  }) => {
+    console.log('Creating task:', taskData);
+    toast({
+      title: 'Task created',
+      description: `"${taskData.title}" has been added to ${taskData.status.replace('_', ' ')}.`,
+    });
+  };
+
+  const handleProjectClick = (project: Project) => {
+    setSelectedProject(project);
+    setActiveView('project');
+  };
+
+  const handleBackToProjects = () => {
+    setSelectedProject(null);
+    setActiveView('projects');
+  };
+
+  const isProjectSelected = selectedProject !== null;
+
+  const navItems: { id: ViewType; icon: typeof LayoutGrid; label: string; requiresProject: boolean }[] = [
+    { id: 'project', icon: Box, label: 'Project', requiresProject: false },
+    { id: 'board', icon: LayoutGrid, label: 'Task Board', requiresProject: true },
+    { id: 'list', icon: ListTodo, label: 'My Tasks', requiresProject: true },
+    { id: 'chat', icon: MessageSquare, label: 'Group Chat', requiresProject: true },
+    { id: 'files', icon: Folder, label: 'Files', requiresProject: true },
+    { id: 'settings', icon: Settings, label: 'Settings', requiresProject: true },
+  ];
+
+  const getHeaderTitle = () => {
+    if (activeView === 'projects') return 'Projects';
+    return navItems.find((n) => n.id === activeView)?.label || 'Project';
+  };
+
+  return (
+    <div className="flex flex-1 overflow-hidden animate-fade-in">
+      {/* Left rail */}
+      <aside className="w-56 border-r border-border bg-surface flex flex-col">
+        {/* Back button & project info */}
+        <div className="p-4 border-b border-border">
+          {isProjectSelected ? (
+            <>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="gap-2 mb-3 -ml-2"
+                onClick={handleBackToProjects}
+              >
+                <ArrowLeft className="h-4 w-4" />
+                Back
+              </Button>
+              <h2 className="font-semibold text-foreground truncate px-3">
+                {selectedProject.title}
+              </h2>
+              <Badge variant={statusVariants[selectedProject.status]} className="mt-2 ml-3">
+                {statusLabels[selectedProject.status]}
+              </Badge>
+            </>
+          ) : (
+            <div className="py-2 px-3">
+              <h2 className="font-semibold text-foreground">My Workspace</h2>
+              <p className="text-xs text-muted-foreground mt-1">Select a project to start</p>
+            </div>
+          )}
+        </div>
+
+        {/* Navigation */}
+        <nav className="flex-1 p-2 flex flex-col">
+          <div className="space-y-1">
+            {navItems.map((item) => {
+              const isDisabled = item.requiresProject && !isProjectSelected;
+              const isActive = activeView === item.id || (activeView === 'projects' && item.id === 'project');
+              
+              return (
+                <button
+                  key={item.id}
+                  onClick={() => {
+                    if (!isDisabled) {
+                      if (item.id === 'project' && !isProjectSelected) {
+                        setActiveView('projects');
+                      } else {
+                        setActiveView(item.id);
+                      }
+                    }
+                  }}
+                  disabled={isDisabled}
+                  className={cn(
+                    "w-full flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition-colors",
+                    isActive
+                      ? "bg-primary/10 text-primary font-medium"
+                      : isDisabled
+                        ? "text-muted-foreground/40 cursor-not-allowed"
+                        : "text-muted-foreground hover:text-foreground hover:bg-surface-hover"
+                  )}
+                >
+                  <item.icon className="h-4 w-4" />
+                  {item.label}
+                  {item.id === 'chat' && isProjectSelected && (
+                    <span className="ml-auto h-5 w-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center">
+                      3
+                    </span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Back to Home button */}
+          <div className="mt-auto pt-8">
+            <Button
+              variant="outline"
+              size="sm"
+              className="w-full justify-start gap-3 border-border/50 bg-surface-hover/50 hover:bg-primary/10 hover:text-primary hover:border-primary/30 transition-all"
+              onClick={() => navigate('/')}
+            >
+              <Home className="h-4 w-4" />
+              Back to Home
+            </Button>
+          </div>
+        </nav>
+
+        {/* Team members */}
+        <div className="p-4 border-t border-border">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+              Team
+            </span>
+            <Button variant="ghost" size="icon-sm">
+              <Users className="h-4 w-4" />
+            </Button>
+          </div>
+          <div className="space-y-2">
+            {isProjectSelected ? (
+              // Show real team members when project is selected
+              <>
+                {selectedProject.members.slice(0, 4).map((member) => (
+                  <div key={member.id} className="flex items-center gap-2">
+                    <div className="relative">
+                      <Avatar className="h-7 w-7">
+                        <AvatarImage src={member.avatar} />
+                        <AvatarFallback className="text-xs">{member.name.charAt(0)}</AvatarFallback>
+                      </Avatar>
+                      {member.isOnline && (
+                        <span className="absolute bottom-0 right-0 h-2 w-2 rounded-full bg-success border-2 border-surface" />
+                      )}
+                    </div>
+                    <span className="text-sm text-foreground truncate">{member.name}</span>
+                  </div>
+                ))}
+                {selectedProject.members.length > 4 && (
+                  <Button variant="ghost" size="sm" className="w-full text-muted-foreground">
+                    +{selectedProject.members.length - 4} more
+                  </Button>
+                )}
+              </>
+            ) : (
+              // Show grey dummy profiles when no project is selected
+              dummyTeamMembers.map((member) => (
+                <div key={member.id} className="flex items-center gap-2">
+                  <Avatar className="h-7 w-7 bg-muted">
+                    <AvatarFallback className="text-xs bg-muted text-muted-foreground/50">
+                      ?
+                    </AvatarFallback>
+                  </Avatar>
+                  <span className="text-sm text-muted-foreground/50">{member.name}</span>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      </aside>
+
+      {/* Main content */}
+      <main className="flex-1 flex flex-col overflow-hidden">
+        {/* Header */}
+        <header className="h-12 border-b border-border flex items-center px-4">
+          <h3 className="font-medium text-foreground">
+            {getHeaderTitle()}
+          </h3>
+        </header>
+
+        {/* Content */}
+        <div className="flex-1 overflow-auto p-4">
+          {activeView === 'projects' && (
+            <ProjectGrid projects={projects} onProjectClick={handleProjectClick} />
+          )}
+          {activeView === 'project' && selectedProject && (
+            <ProjectDetailsView project={selectedProject} />
+          )}
+          {activeView === 'board' && selectedProject && (
+            <KanbanBoard tasks={projectTasks} onTaskClick={handleTaskClick} onAddTask={handleAddTask} />
+          )}
+          {activeView === 'list' && selectedProject && (
+            <MyTasksList 
+              tasks={mockTasks} 
+              projects={projects} 
+              onTaskClick={handleTaskClick} 
+            />
+          )}
+          {activeView === 'chat' && selectedProject && (
+            <div className="h-full -m-4">
+              <ProjectChat messages={chatMessages.filter((m) => m.projectId === selectedProject.id)} />
+            </div>
+          )}
+          {activeView === 'files' && selectedProject && <FilesSection />}
+          {activeView === 'settings' && selectedProject && <SettingsView project={selectedProject} />}
+        </div>
+      </main>
+
+      {/* Task modal */}
+      <TaskModal
+        task={selectedTask}
+        open={isTaskModalOpen}
+        onOpenChange={setIsTaskModalOpen}
+      />
+
+      {/* Create task modal */}
+      <CreateTaskModal
+        open={isCreateTaskModalOpen}
+        onOpenChange={setIsCreateTaskModalOpen}
+        initialStatus={createTaskStatus}
+        onCreateTask={handleCreateTask}
+      />
+    </div>
+  );
+}

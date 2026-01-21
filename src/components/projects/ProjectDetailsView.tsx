@@ -6,7 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
-
+import { ContributionHeatmap } from './ContributionHeatmap';
 interface ProjectDetailsViewProps {
   project: Project;
 }
@@ -239,6 +239,9 @@ export function ProjectDetailsView({ project }: ProjectDetailsViewProps) {
           )}
         </CardContent>
       </Card>
+
+      {/* Team Contributions Heatmap */}
+      <ContributionHeatmap roles={project.roles} members={project.members} />
     </div>
   );
 }

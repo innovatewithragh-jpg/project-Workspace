@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ProjectRole, User } from '@/types';
-import { format, subDays, startOfWeek, eachDayOfInterval, isToday, isSameDay } from 'date-fns';
+import { format, subDays, eachDayOfInterval, isToday, isSameDay } from 'date-fns';
 import { Activity } from 'lucide-react';
 import {
   Tooltip,
@@ -16,21 +15,22 @@ interface ContributionHeatmapProps {
   members: User[];
 }
 
-// Generate mock contribution data for each teammate
-const generateMockContributions = (userId: string) => {
+// Generate mock contribution data aggregated for all teammates
+const generateAggregatedContributions = (teammateCount: number) => {
   const contributions: { date: Date; count: number }[] = [];
   const today = new Date();
   
   // Generate data for the last 20 weeks (140 days)
   for (let i = 0; i < 140; i++) {
     const date = subDays(today, i);
-    // Random contribution count (0-4), weighted towards lower values
+    // Random contribution count based on team size
     const random = Math.random();
     let count = 0;
-    if (random > 0.6) count = 1;
-    if (random > 0.75) count = 2;
-    if (random > 0.85) count = 3;
-    if (random > 0.93) count = 4;
+    if (random > 0.5) count = 1;
+    if (random > 0.65) count = 2;
+    if (random > 0.78) count = 3;
+    if (random > 0.88) count = 4;
+    if (random > 0.95) count = Math.min(teammateCount + 2, 6);
     
     contributions.push({ date, count });
   }
@@ -47,16 +47,22 @@ const getContributionLevel = (count: number): string => {
 };
 
 export function ContributionHeatmap({ roles, members }: ContributionHeatmapProps) {
-  // Get teammates from roles or fallback to members
-  const teammates = useMemo(() => {
+  // Get teammate count
+  const teammateCount = useMemo(() => {
     if (roles && roles.length > 0) {
-      return roles.map(r => ({ user: r.user, role: r.role }));
+      return roles.length;
     }
-    return members.map((m, i) => ({ 
-      user: m, 
-      role: i === 0 ? 'Project Lead' : 'Team Member' 
-    }));
+    return members.length;
   }, [roles, members]);
+
+  // Generate aggregated contributions for all teammates
+  const contributions = useMemo(() => {
+    return generateAggregatedContributions(teammateCount);
+  }, [teammateCount]);
+
+  const getContributionForDay = (date: Date) => {
+    return contributions.find(c => isSameDay(c.date, date))?.count || 0;
+  };
 
   // Generate weeks for the grid (20 weeks)
   const weeks = useMemo(() => {
@@ -111,124 +117,95 @@ export function ContributionHeatmap({ roles, members }: ContributionHeatmapProps
       <CardHeader>
         <CardTitle className="text-lg flex items-center gap-2">
           <Activity className="h-4 w-4" />
-          Team Contributions
+          Team Activity
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent>
         <TooltipProvider>
-          {teammates.map(({ user, role }) => {
-            const contributions = generateMockContributions(user.id);
-            
-            const getContributionForDay = (date: Date) => {
-              return contributions.find(c => isSameDay(c.date, date))?.count || 0;
-            };
-            
-            const totalContributions = contributions.reduce((sum, c) => sum + c.count, 0);
-            
-            return (
-              <div key={user.id} className="space-y-3">
-                {/* Teammate header */}
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src={user.avatar} />
-                      <AvatarFallback className="text-xs">
-                        {user.name.split(' ').map(n => n[0]).join('')}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <p className="text-sm font-medium text-foreground">{user.name}</p>
-                      <p className="text-xs text-muted-foreground">{role}</p>
-                    </div>
-                  </div>
-                  <span className="text-xs text-muted-foreground">
-                    {totalContributions} tasks completed
-                  </span>
+          <div className="space-y-3">
+            {/* Heatmap grid */}
+            <div className="overflow-x-auto pb-2">
+              <div className="min-w-max">
+                {/* Month labels */}
+                <div className="relative h-5 mb-1 ml-6">
+                  {monthLabels.map(({ month, weekIndex }) => (
+                    <span 
+                      key={`${month}-${weekIndex}`}
+                      className="absolute text-xs text-muted-foreground"
+                      style={{ left: `${weekIndex * 12}px` }}
+                    >
+                      {month}
+                    </span>
+                  ))}
                 </div>
                 
-                {/* Heatmap grid */}
-                <div className="overflow-x-auto pb-2">
-                  <div className="min-w-max">
-                    {/* Month labels */}
-                    <div className="relative h-5 mb-1 ml-6">
-                      {monthLabels.map(({ month, weekIndex }) => (
-                        <span 
-                          key={`${month}-${weekIndex}`}
-                          className="absolute text-xs text-muted-foreground"
-                          style={{ left: `${weekIndex * 12}px` }}
-                        >
-                          {month}
-                        </span>
-                      ))}
-                    </div>
-                    
-                    <div className="flex gap-[2px]">
-                      {/* Day labels */}
-                      <div className="flex flex-col gap-[2px] text-[10px] text-muted-foreground pr-1 w-4">
-                        <span className="h-[10px] leading-[10px]">S</span>
-                        <span className="h-[10px] leading-[10px]">M</span>
-                        <span className="h-[10px] leading-[10px]">T</span>
-                        <span className="h-[10px] leading-[10px]">W</span>
-                        <span className="h-[10px] leading-[10px]">T</span>
-                        <span className="h-[10px] leading-[10px]">F</span>
-                        <span className="h-[10px] leading-[10px]">S</span>
-                      </div>
-                      
-                      {/* Grid */}
-                      <div className="flex gap-[2px]">
-                        {weeks.map((week, weekIndex) => (
-                          <div key={weekIndex} className="flex flex-col gap-[2px]">
-                            {[0, 1, 2, 3, 4, 5, 6].map((dayOfWeek) => {
-                              const day = week.find(d => d.getDay() === dayOfWeek);
-                              
-                              if (!day) {
-                                return (
-                                  <div 
-                                    key={dayOfWeek} 
-                                    className="w-[10px] h-[10px] rounded-[2px]" 
-                                  />
-                                );
-                              }
-                              
-                              const count = getContributionForDay(day);
-                              const levelClass = getContributionLevel(count);
-                              
-                              return (
-                                <Tooltip key={dayOfWeek}>
-                                  <TooltipTrigger asChild>
-                                    <div 
-                                      className={`w-[10px] h-[10px] rounded-[2px] cursor-pointer transition-all hover:ring-2 hover:ring-primary/50 ${levelClass} ${isToday(day) ? 'ring-2 ring-primary' : ''}`}
-                                    />
-                                  </TooltipTrigger>
-                                  <TooltipContent side="top" className="text-xs">
-                                    <p className="font-medium">{count} tasks</p>
-                                    <p className="text-muted-foreground">{format(day, 'MMM d, yyyy')}</p>
-                                  </TooltipContent>
-                                </Tooltip>
-                              );
-                            })}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
+                <div className="flex gap-[2px]">
+                  {/* Day labels */}
+                  <div className="flex flex-col gap-[2px] text-[10px] text-muted-foreground pr-1 w-4">
+                    <span className="h-[10px] leading-[10px]">S</span>
+                    <span className="h-[10px] leading-[10px]">M</span>
+                    <span className="h-[10px] leading-[10px]">T</span>
+                    <span className="h-[10px] leading-[10px]">W</span>
+                    <span className="h-[10px] leading-[10px]">T</span>
+                    <span className="h-[10px] leading-[10px]">F</span>
+                    <span className="h-[10px] leading-[10px]">S</span>
                   </div>
-                </div>
-                
-                {/* Legend */}
-                <div className="flex items-center justify-end gap-2 text-xs text-muted-foreground">
-                  <span>Less</span>
+                  
+                  {/* Grid */}
                   <div className="flex gap-[2px]">
-                    <div className="w-[10px] h-[10px] rounded-[2px] bg-muted/50" />
-                    <div className="w-[10px] h-[10px] rounded-[2px] bg-primary/25" />
-                    <div className="w-[10px] h-[10px] rounded-[2px] bg-primary/50" />
-                    <div className="w-[10px] h-[10px] rounded-[2px] bg-primary/75" />
-                    <div className="w-[10px] h-[10px] rounded-[2px] bg-primary" />
+                    {weeks.map((week, weekIndex) => (
+                      <div key={weekIndex} className="flex flex-col gap-[2px]">
+                        {[0, 1, 2, 3, 4, 5, 6].map((dayOfWeek) => {
+                          const day = week.find(d => d.getDay() === dayOfWeek);
+                          
+                          if (!day) {
+                            return (
+                              <div 
+                                key={dayOfWeek} 
+                                className="w-[10px] h-[10px] rounded-[2px]" 
+                              />
+                            );
+                          }
+                          
+                          const count = getContributionForDay(day);
+                          const levelClass = getContributionLevel(count);
+                          
+                          return (
+                            <Tooltip key={dayOfWeek}>
+                              <TooltipTrigger asChild>
+                                <div 
+                                  className={`w-[10px] h-[10px] rounded-[2px] cursor-pointer transition-all hover:ring-2 hover:ring-primary/50 ${levelClass} ${isToday(day) ? 'ring-2 ring-primary' : ''}`}
+                                />
+                              </TooltipTrigger>
+                              <TooltipContent side="top" className="text-xs">
+                                <p className="font-medium">
+                                  {count === 0 ? 'No activity' : count === 1 ? 'Low activity' : count <= 3 ? 'Moderate activity' : 'High activity'}
+                                </p>
+                                <p className="text-muted-foreground">{format(day, 'MMM d, yyyy')}</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          );
+                        })}
+                      </div>
+                    ))}
                   </div>
-                  <span>More</span>
                 </div>
               </div>
-            );
-          })}
+            </div>
+            
+            {/* Legend */}
+            <div className="flex items-center justify-end gap-2 text-xs text-muted-foreground">
+              <span>Less</span>
+              <div className="flex gap-[2px]">
+                <div className="w-[10px] h-[10px] rounded-[2px] bg-muted/50" />
+                <div className="w-[10px] h-[10px] rounded-[2px] bg-primary/25" />
+                <div className="w-[10px] h-[10px] rounded-[2px] bg-primary/50" />
+                <div className="w-[10px] h-[10px] rounded-[2px] bg-primary/75" />
+                <div className="w-[10px] h-[10px] rounded-[2px] bg-primary" />
+              </div>
+              <span>More</span>
+            </div>
+          </div>
         </TooltipProvider>
       </CardContent>
     </Card>

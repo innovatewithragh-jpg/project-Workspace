@@ -150,24 +150,28 @@ export function ContributionHeatmap({ roles, members }: ContributionHeatmapProps
                 <div className="overflow-x-auto pb-2">
                   <div className="min-w-max">
                     {/* Month labels */}
-                    <div className="flex mb-1 text-xs text-muted-foreground pl-8">
+                    <div className="relative h-5 mb-1 ml-6">
                       {monthLabels.map(({ month, weekIndex }) => (
                         <span 
                           key={`${month}-${weekIndex}`}
-                          className="absolute"
-                          style={{ marginLeft: `${weekIndex * 14 + 32}px` }}
+                          className="absolute text-xs text-muted-foreground"
+                          style={{ left: `${weekIndex * 12}px` }}
                         >
                           {month}
                         </span>
                       ))}
                     </div>
                     
-                    <div className="flex gap-1 mt-6">
+                    <div className="flex gap-[2px]">
                       {/* Day labels */}
-                      <div className="flex flex-col gap-[2px] text-[10px] text-muted-foreground pr-1 pt-[1px]">
+                      <div className="flex flex-col gap-[2px] text-[10px] text-muted-foreground pr-1 w-4">
+                        <span className="h-[10px] leading-[10px]">S</span>
                         <span className="h-[10px] leading-[10px]">M</span>
+                        <span className="h-[10px] leading-[10px]">T</span>
                         <span className="h-[10px] leading-[10px]">W</span>
+                        <span className="h-[10px] leading-[10px]">T</span>
                         <span className="h-[10px] leading-[10px]">F</span>
+                        <span className="h-[10px] leading-[10px]">S</span>
                       </div>
                       
                       {/* Grid */}

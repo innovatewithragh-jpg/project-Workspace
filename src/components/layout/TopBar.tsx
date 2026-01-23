@@ -2,6 +2,7 @@ import { Search, Globe, Bell, MessageCircle } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Link } from 'react-router-dom';
 import gostudsLogo from '@/assets/gostuds-logo.png';
+import { notifications } from '@/data/mockNotifications';
 
 interface TopBarProps {
   onNewProject?: () => void;
@@ -36,10 +37,15 @@ export function TopBar({ onNewProject, onNewTask }: TopBarProps) {
           <Globe className="h-5 w-5" />
           <span className="text-xs">My Circle</span>
         </button>
-        <button className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
+        <Link to="/notifications" className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors relative">
           <Bell className="h-5 w-5" />
           <span className="text-xs">Notifications</span>
-        </button>
+          {notifications.filter(n => !n.isRead).length > 0 && (
+            <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-[10px] text-primary-foreground flex items-center justify-center">
+              {notifications.filter(n => !n.isRead).length}
+            </span>
+          )}
+        </Link>
         <button className="flex flex-col items-center gap-1 text-muted-foreground hover:text-foreground transition-colors">
           <MessageCircle className="h-5 w-5" />
           <span className="text-xs">Messaging</span>

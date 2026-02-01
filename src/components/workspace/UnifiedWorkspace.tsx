@@ -373,7 +373,7 @@ export function UnifiedWorkspace() {
       {isMobile && (
         <TooltipProvider>
           <nav className="fixed bottom-0 left-0 right-0 z-50 bg-surface border-t border-border flex items-center justify-around px-2 py-2 md:hidden">
-            {navItems.slice(0, 5).map((item) => {
+            {navItems.map((item) => {
               const isActive = activeView === item.id || (activeView === 'projects' && item.id === 'project');
               return (
                 <Tooltip key={item.id}>
@@ -408,20 +408,6 @@ export function UnifiedWorkspace() {
                 </Tooltip>
               );
             })}
-            {/* Menu button for additional options */}
-            <Sheet open={isMobileSidebarOpen} onOpenChange={setIsMobileSidebarOpen}>
-              <SheetTrigger asChild>
-                <button className="flex flex-col items-center gap-1 p-2 rounded-lg text-muted-foreground transition-colors">
-                  <Menu className="h-5 w-5" />
-                  <span className="text-[10px] font-medium">More</span>
-                </button>
-              </SheetTrigger>
-              <SheetContent side="left" className="w-64 p-0 bg-surface">
-                <div className="flex flex-col h-full">
-                  <SidebarContent onNavClick={() => setIsMobileSidebarOpen(false)} />
-                </div>
-              </SheetContent>
-            </Sheet>
           </nav>
         </TooltipProvider>
       )}

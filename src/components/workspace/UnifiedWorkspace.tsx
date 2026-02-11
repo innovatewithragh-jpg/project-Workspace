@@ -369,48 +369,7 @@ export function UnifiedWorkspace() {
         <SidebarContent />
       </aside>
 
-      {/* Mobile Bottom Navigation */}
-      {isMobile && (
-        <TooltipProvider>
-          <nav className="fixed bottom-0 left-0 right-0 z-50 bg-surface border-t border-border flex items-center justify-around px-2 py-2 md:hidden">
-            {navItems.map((item) => {
-              const isActive = activeView === item.id || (activeView === 'projects' && item.id === 'project');
-              return (
-                <Tooltip key={item.id}>
-                  <TooltipTrigger asChild>
-                    <button
-                      onClick={() => {
-                        if (item.id === 'project' && !isProjectSelected) {
-                          setActiveView('projects');
-                        } else {
-                          setActiveView(item.id);
-                        }
-                      }}
-                      className={cn(
-                        "flex flex-col items-center gap-1 p-2 rounded-lg transition-colors relative",
-                        isActive
-                          ? "text-primary"
-                          : "text-muted-foreground"
-                      )}
-                    >
-                      <item.icon className="h-5 w-5" />
-                      <span className="text-[10px] font-medium">{item.label.split(' ')[0]}</span>
-                      {item.id === 'chat' && isProjectSelected && (
-                        <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-primary text-primary-foreground text-[10px] flex items-center justify-center">
-                          3
-                        </span>
-                      )}
-                    </button>
-                  </TooltipTrigger>
-                  <TooltipContent side="top">
-                    {item.label}
-                  </TooltipContent>
-                </Tooltip>
-              );
-            })}
-          </nav>
-        </TooltipProvider>
-      )}
+      {/* Mobile Bottom Navigation - REMOVED */}
 
       {/* Main content */}
       <main className="flex-1 flex flex-col overflow-hidden">
@@ -420,8 +379,8 @@ export function UnifiedWorkspace() {
           <div className="flex items-center gap-2">
             <Sheet open={isMobileSidebarOpen} onOpenChange={setIsMobileSidebarOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden">
-                  <Menu className="h-5 w-5" />
+                <Button variant="ghost" size="icon" className="md:hidden h-10 w-10">
+                  <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
               <SheetContent side="left" className="w-64 p-0 bg-surface">
@@ -431,10 +390,10 @@ export function UnifiedWorkspace() {
               </SheetContent>
             </Sheet>
             
-            <nav className="flex items-center gap-1.5 md:gap-2 text-xs md:text-sm">
+            <nav className="flex items-center gap-1.5 md:gap-2 text-sm md:text-sm">
               <span className="text-muted-foreground hidden sm:inline">My Workspace</span>
               <span className="text-muted-foreground hidden sm:inline">/</span>
-              <span className="font-medium text-foreground">{getHeaderTitle()}</span>
+              <span className="font-medium text-foreground text-base md:text-sm">{getHeaderTitle()}</span>
             </nav>
           </div>
           
@@ -446,13 +405,13 @@ export function UnifiedWorkspace() {
               size={isMobile ? "sm" : "default"}
             >
               <Plus className="h-4 w-4" />
-              <span className="hidden sm:inline">Create Project</span>
+              <span>Create Project</span>
             </Button>
           )}
         </header>
 
         {/* Content - add bottom padding for mobile nav */}
-        <div className="flex-1 overflow-auto p-3 md:p-4 pb-20 md:pb-4">
+        <div className="flex-1 overflow-auto scrollbar-hide p-3 md:p-4">
           {activeView === 'projects' && (
             <ProjectGrid projects={projects} onProjectClick={handleProjectClick} />
           )}

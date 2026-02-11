@@ -1,8 +1,10 @@
 import { useState, useMemo } from 'react';
-import { Filter, SortAsc, Grid, Pin } from 'lucide-react';
+import { Filter, SortAsc, Grid, Pin, Search } from 'lucide-react';
 import { Project, ProjectStatus } from '@/types';
 import { ProjectCard } from './ProjectCard';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { useIsMobile } from '@/hooks/use-mobile';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,8 +21,10 @@ type SortOption = 'updated' | 'name' | 'dueDate';
 type FilterOption = 'all' | ProjectStatus;
 
 export function ProjectGrid({ projects, onProjectClick }: ProjectGridProps) {
+  const isMobile = useIsMobile();
   const [sortBy, setSortBy] = useState<SortOption>('updated');
   const [filterBy, setFilterBy] = useState<FilterOption>('all');
+  const [mobileSearch, setMobileSearch] = useState('');
 
   const pinnedProjects = useMemo(() => 
     projects.filter(p => p.isPinned),
@@ -53,40 +57,52 @@ export function ProjectGrid({ projects, onProjectClick }: ProjectGridProps) {
   return (
     <div className="space-y-8">
       {/* Toolbar */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-3">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="gap-2 bg-card/50 hover:bg-card border-border/50">
-                <Filter className="h-4 w-4" />
-                <span className="hidden sm:inline">
-                  {filterBy === 'all' ? 'All Projects' : filterBy.charAt(0).toUpperCase() + filterBy.slice(1)}
-                </span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="bg-popover/95 backdrop-blur-xl border-border/50">
-              <DropdownMenuItem onClick={() => setFilterBy('all')}>All Projects</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setFilterBy('active')}>Active</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setFilterBy('planning')}>Planning</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setFilterBy('paused')}>Paused</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setFilterBy('done')}>Done</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+      <div className="flex items-center gap-3">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm" className="gap-2 bg-card/50 hover:bg-card border-border/50">
+              <Filter className="h-4 w-4" />
+              <span className="hidden sm:inline">
+                {filterBy === 'all' ? 'All Projects' : filterBy.charAt(0).toUpperCase() + filterBy.slice(1)}
+              </span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" className="bg-popover/95 backdrop-blur-xl border-border/50">
+            <DropdownMenuItem onClick={() => setFilterBy('all')}>All Projects</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setFilterBy('active')}>Active</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setFilterBy('planning')}>Planning</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setFilterBy('paused')}>Paused</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setFilterBy('done')}>Done</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
 
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="outline" size="sm" className="gap-2 bg-card/50 hover:bg-card border-border/50">
-                <SortAsc className="h-4 w-4" />
-                <span className="hidden sm:inline">Sort</span>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="start" className="bg-popover/95 backdrop-blur-xl border-border/50">
-              <DropdownMenuItem onClick={() => setSortBy('updated')}>Recently Updated</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setSortBy('name')}>Name</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setSortBy('dueDate')}>Due Date</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </div>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm" className="gap-2 bg-card/50 hover:bg-card border-border/50">
+              <SortAsc className="h-4 w-4" />
+              <span className="hidden sm:inline">Sort</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="start" className="bg-popover/95 backdrop-blur-xl border-border/50">
+            <DropdownMenuItem onClick={() => setSortBy('updated')}>Recently Updated</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setSortBy('name')}>Name</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => setSortBy('dueDate')}>Due Date</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+
+        {/* Mobile Search */}
+        {isMobile && (
+          <div className="relative flex-1">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
+            <Input
+              type="text"
+              placeholder="Search..."
+              value={mobileSearch}
+              onChange={(e) => setMobileSearch(e.target.value)}
+              className="pl-8 h-8 text-sm bg-muted/50 border-border/50"
+            />
+          </div>
+        )}
       </div>
 
       {/* Pinned section */}

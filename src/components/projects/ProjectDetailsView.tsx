@@ -1,4 +1,4 @@
-import { Calendar, Link as LinkIcon, Tag, Settings, MessageSquare, MoreVertical, Plus, ArrowUp, Pencil, Grid3X3, Clock } from 'lucide-react';
+import { Calendar, Link as LinkIcon, Tag, Settings, MessageSquare, MoreVertical, Plus, ArrowUp, Pencil, Grid3X3, Clock, Github } from 'lucide-react';
 import { Project } from '@/types';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -97,6 +97,19 @@ export function ProjectDetailsView({ project }: ProjectDetailsViewProps) {
               <span>Duration: {project.duration}</span>
             </div>
           )}
+
+          {/* GitHub Connected */}
+          <div className="flex items-center gap-2 mt-4">
+            <a
+              href="https://github.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors bg-muted/50 rounded-lg px-3 py-1.5 border border-border/50"
+            >
+              <Github className="h-4 w-4" />
+              <span>GitHub Connected</span>
+            </a>
+          </div>
         </CardContent>
       </Card>
 

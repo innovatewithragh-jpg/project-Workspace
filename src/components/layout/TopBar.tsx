@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { Search, Globe, Bell, MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import gostudsLogo from '@/assets/gostuds-logo.png';
 import { notifications } from '@/data/mockNotifications';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { Input } from '@/components/ui/input';
 
 interface TopBarProps {
   onNewProject?: () => void;
@@ -13,6 +15,7 @@ interface TopBarProps {
 export function TopBar({ onNewProject, onNewTask }: TopBarProps) {
   const isMobile = useIsMobile();
   const unreadCount = notifications.filter(n => !n.isRead).length;
+  const [searchQuery, setSearchQuery] = useState('');
 
   return (
     <header className="h-14 md:h-16 border-b border-border bg-background flex items-center justify-between px-3 md:px-6">
@@ -23,20 +26,23 @@ export function TopBar({ onNewProject, onNewTask }: TopBarProps) {
         </Link>
       </div>
 
+      {/* Desktop Search Bar */}
+      <div className="hidden md:flex flex-1 max-w-md mx-6">
+        <div className="relative w-full">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+          <Input
+            type="text"
+            placeholder="Search projects, tasks..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="pl-9 h-9 bg-muted/50 border-border/50"
+          />
+        </div>
+      </div>
+
       {/* Right Icons */}
       <TooltipProvider>
-        <div className="flex items-center gap-3 md:gap-6">
-          {/* Search - icon only on mobile */}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <button className="flex flex-col items-center gap-0.5 md:gap-1 text-muted-foreground hover:text-foreground transition-colors p-1.5 md:p-0">
-                <Search className="h-5 w-5" />
-                {!isMobile && <span className="text-xs">Search</span>}
-              </button>
-            </TooltipTrigger>
-            <TooltipContent>Search</TooltipContent>
-          </Tooltip>
-
+        <div className="flex items-center gap-3 md:gap-5">
           {/* My Circle */}
           <Tooltip>
             <TooltipTrigger asChild>

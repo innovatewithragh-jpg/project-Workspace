@@ -104,7 +104,7 @@ export function ProjectDetailsView({ project }: ProjectDetailsViewProps) {
               href="https://github.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors bg-muted/50 rounded-lg px-3 py-1.5 border border-border/50"
+              className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary/80 transition-colors bg-primary/10 rounded-lg px-4 py-2 border border-primary/30 hover:border-primary/50 shadow-sm"
             >
               <Github className="h-4 w-4" />
               <span>GitHub Connected</span>

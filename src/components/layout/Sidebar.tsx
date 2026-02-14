@@ -1,4 +1,4 @@
-import { Home, Search, Users, Zap, Trophy, Settings, ExternalLink, Sun, Moon } from 'lucide-react';
+import { Home, Search, Users, Zap, Trophy, Settings, ExternalLink, Sun, Moon, RefreshCw } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { currentUser } from '@/data/mockData';
 import { Link, useLocation } from 'react-router-dom';
@@ -75,7 +75,7 @@ export function Sidebar() {
             {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
           </span>
-          {theme === 'dark' ? <Moon className="h-5 w-5 text-primary" /> : <Sun className="h-5 w-5 text-warning" />}
+          <RefreshCw className="h-5 w-5" />
         </Button>
       </div>
     </aside>

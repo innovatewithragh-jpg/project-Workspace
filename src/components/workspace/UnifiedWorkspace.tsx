@@ -19,6 +19,7 @@ import {
   Menu,
   Sun,
   Moon,
+  RefreshCw,
 } from 'lucide-react';
 import { Project, Task, TaskStatus } from '@/types';
 import { Button } from '@/components/ui/button';
@@ -324,7 +325,7 @@ export function UnifiedWorkspace() {
               {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
               {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
             </span>
-            {theme === 'dark' ? <Moon className="h-4 w-4 text-primary" /> : <Sun className="h-4 w-4 text-warning" />}
+            <RefreshCw className="h-4 w-4" />
           </Button>
         </div>
       </nav>

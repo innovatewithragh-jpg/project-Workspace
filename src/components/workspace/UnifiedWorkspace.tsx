@@ -319,13 +319,21 @@ export function UnifiedWorkspace() {
             variant="ghost"
             size="sm"
             className="w-full justify-between text-muted-foreground hover:text-foreground"
-            onClick={toggleTheme}
+            onClick={(e) => {
+              const icon = e.currentTarget.querySelector('.refresh-icon');
+              if (icon) {
+                icon.classList.remove('animate-spin');
+                void (icon as HTMLElement).offsetWidth;
+                icon.classList.add('animate-spin');
+              }
+              toggleTheme();
+            }}
           >
             <span className="flex items-center gap-3">
               {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
               {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
             </span>
-            <RefreshCw className="h-4 w-4" />
+            <RefreshCw className="refresh-icon h-4 w-4 transition-transform duration-500" />
           </Button>
         </div>
       </nav>

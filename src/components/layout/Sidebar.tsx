@@ -68,14 +68,22 @@ export function Sidebar() {
       <div className="p-4 border-t border-border">
         <Button
           variant="ghost"
-          onClick={toggleTheme}
+          onClick={(e) => {
+            const icon = e.currentTarget.querySelector('.refresh-icon');
+            if (icon) {
+              icon.classList.remove('animate-spin');
+              void (icon as HTMLElement).offsetWidth;
+              icon.classList.add('animate-spin');
+            }
+            toggleTheme();
+          }}
           className="w-full justify-between text-sm font-medium text-muted-foreground hover:text-foreground"
         >
           <span className="flex items-center gap-3">
             {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
           </span>
-          <RefreshCw className="h-5 w-5" />
+          <RefreshCw className="refresh-icon h-5 w-5 transition-transform duration-500" />
         </Button>
       </div>
     </aside>

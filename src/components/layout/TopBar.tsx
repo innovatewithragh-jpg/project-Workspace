@@ -2,8 +2,10 @@ import { useState } from 'react';
 import { Search, Globe, Bell, MessageCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import gostudsLogo from '@/assets/gostuds-logo.png';
+import gostudsLogoDark from '@/assets/gostuds-logo-dark.png';
 import { notifications } from '@/data/mockNotifications';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useTheme } from '@/hooks/use-theme';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { Input } from '@/components/ui/input';
 
@@ -14,6 +16,7 @@ interface TopBarProps {
 
 export function TopBar({ onNewProject, onNewTask }: TopBarProps) {
   const isMobile = useIsMobile();
+  const { theme } = useTheme();
   const unreadCount = notifications.filter(n => !n.isRead).length;
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -22,7 +25,7 @@ export function TopBar({ onNewProject, onNewTask }: TopBarProps) {
       {/* Logo */}
       <div className="flex items-center">
         <Link to="/">
-          <img src={gostudsLogo} alt="GoStuds" className="h-6 md:h-8" />
+          <img src={theme === 'dark' ? gostudsLogoDark : gostudsLogo} alt="GoStuds" className="h-6 md:h-8" />
         </Link>
       </div>
 

@@ -69,10 +69,13 @@ export function Sidebar() {
         <Button
           variant="ghost"
           onClick={toggleTheme}
-          className="w-full justify-start gap-3 text-sm font-medium text-muted-foreground hover:text-foreground"
+          className="w-full justify-between text-sm font-medium text-muted-foreground hover:text-foreground"
         >
-          {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-          {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+          <span className="flex items-center gap-3">
+            {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+            {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+          </span>
+          {theme === 'dark' ? <Moon className="h-5 w-5 text-primary" /> : <Sun className="h-5 w-5 text-warning" />}
         </Button>
       </div>
     </aside>

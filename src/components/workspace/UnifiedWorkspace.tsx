@@ -17,6 +17,8 @@ import {
   X,
   Plus,
   Menu,
+  Sun,
+  Moon,
 } from 'lucide-react';
 import { Project, Task, TaskStatus } from '@/types';
 import { Button } from '@/components/ui/button';
@@ -38,6 +40,7 @@ import { tasks as mockTasks, chatMessages, projects } from '@/data/mockData';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useTheme } from '@/hooks/use-theme';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 type ViewType = 'projects' | 'project' | 'board' | 'list' | 'chat' | 'files' | 'settings';
@@ -66,6 +69,7 @@ const dummyTeamMembers = [
 export function UnifiedWorkspace() {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const { theme, toggleTheme } = useTheme();
   const [activeView, setActiveView] = useState<ViewType>('projects');
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
@@ -296,8 +300,8 @@ export function UnifiedWorkspace() {
           })}
         </div>
 
-        {/* Back to Home button */}
-        <div className="mt-auto pt-8">
+        {/* Back to Home & Dark Mode */}
+        <div className="mt-auto pt-8 space-y-2">
           <Button
             variant="outline"
             size="sm"
@@ -309,6 +313,15 @@ export function UnifiedWorkspace() {
           >
             <Home className="h-4 w-4" />
             Back to Home
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="w-full justify-start gap-3 text-muted-foreground hover:text-foreground"
+            onClick={toggleTheme}
+          >
+            {theme === 'dark' ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+            {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
           </Button>
         </div>
       </nav>

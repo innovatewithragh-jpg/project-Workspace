@@ -1,7 +1,9 @@
-import { Home, Search, Users, Zap, Trophy, Settings, ExternalLink } from 'lucide-react';
+import { Home, Search, Users, Zap, Trophy, Settings, ExternalLink, Sun, Moon } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { currentUser } from '@/data/mockData';
 import { Link, useLocation } from 'react-router-dom';
+import { useTheme } from '@/hooks/use-theme';
+import { Button } from '@/components/ui/button';
 
 const navigation = [
   { name: 'Home', href: '/', icon: Home },
@@ -13,9 +15,10 @@ const navigation = [
 
 export function Sidebar() {
   const location = useLocation();
+  const { theme, toggleTheme } = useTheme();
 
   return (
-    <aside className="w-64 flex-shrink-0 bg-card border-r border-border">
+    <aside className="w-64 flex-shrink-0 bg-card border-r border-border flex flex-col">
       {/* User Profile Section */}
       <div className="p-6">
         <div className="flex flex-col items-center text-center">
@@ -38,7 +41,7 @@ export function Sidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className="px-3">
+      <nav className="px-3 flex-1">
         <ul className="space-y-2">
           {navigation.map((item) => {
             const isActive = location.pathname === item.href;
@@ -60,6 +63,18 @@ export function Sidebar() {
           })}
         </ul>
       </nav>
+
+      {/* Dark Mode Toggle */}
+      <div className="p-4 border-t border-border">
+        <Button
+          variant="ghost"
+          onClick={toggleTheme}
+          className="w-full justify-start gap-3 text-sm font-medium text-muted-foreground hover:text-foreground"
+        >
+          {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
+          {theme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+        </Button>
+      </div>
     </aside>
   );
 }

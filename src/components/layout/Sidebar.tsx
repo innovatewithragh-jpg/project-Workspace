@@ -69,11 +69,10 @@ export function Sidebar() {
         <Button
           variant="ghost"
           onClick={(e) => {
-            const icon = e.currentTarget.querySelector('.refresh-icon');
+            const icon = e.currentTarget.querySelector('.refresh-icon') as HTMLElement;
             if (icon) {
-              icon.classList.remove('animate-spin');
-              void (icon as HTMLElement).offsetWidth;
-              icon.classList.add('animate-spin');
+              icon.style.transition = 'transform 0.5s ease';
+              icon.style.transform = icon.style.transform === 'rotate(360deg)' ? 'rotate(0deg)' : 'rotate(360deg)';
             }
             toggleTheme();
           }}
